@@ -29,7 +29,8 @@ Por isso:
 ### 1.2. O que ficará de fora
 
 Seguindo o pressuposto de não adicionar itens não avaliados:
-- Não haverá deploy.
+- Não haverá deploy. Por isso não haverão rotinas de CD apesar de rotinas CI estarem presentes.
+- Por não haver deploy também não haverão branches além da Main.
 - Não adicionarei traduções ou estilização complexa.
 - Sem persistencia de dados.
 
@@ -41,7 +42,7 @@ Os commits serão registrados seguindo a convenção em inglês.
 
 ### 2.1. Primeiro Commit
 
-Estruturação do projeto com scaffolding do Vite, instalação e configuração do Tailwind, exclusão de boilerplate desnecessária, começo da estruturação do processo e ambiente de desenvolvimento definindo padrões de projeto e automatização de rotinas e scripts para a manutenção da qualidade de código com formatação, linting e checagem da tipagem incluindo regras de formatação para diferentes IDEs com .editorconfig.
+Estruturação do projeto com scaffolding do Vite, instalação e configuração do Tailwind, exclusão de boilerplate desnecessária, começo da estruturação do processo e ambiente de desenvolvimento definindo padrões de projeto e automatização de rotinas e scripts para a manutenção da qualidade de código com formatação, linting e checagem da tipagem incluindo regras padronização da formatação para diferentes IDEs com .editorconfig.
 
 ### 2.2. 2º Commit
 
@@ -50,3 +51,7 @@ Instalação e configuração do Redux Toolkit utilizando sua convenção oficia
 ### 2.3. 3º Commit
 
 Instalação do MSW (para mockagem da API) e estruturação das pastas. Declaração do enableMocking() no main.tsx com funcionalidade e importação ocorrendo apenas no ambiente de desenvolvimento (evitando o uso de eventuais pastas/arquivos adicionais entrarem em um eventual bundle de produção). Como se trata de uma aplicação enxuta para um teste que não envolverá mais funções de startup, também optei por não separar a lógica de inicialização do arquivo ./src/main.tsx .
+
+### 2.4. 4º Commit
+
+Instalação e configuração da estrutura de testes unitários com Vitest e React Testing Library + Matchers do Jest. Instalação e configuração do Husky e lint-staged + rotinas de CI. Com isso criamos um fluxo de desenvolvimento e checagens automatizadas para qualidade de código pre commit e no repositório do github a cada push.
