@@ -4,8 +4,12 @@ Projeto desenvolvido como parte do processo seletivo para a vaga de Desenvolvedo
 
 > [!WARNING]
 > **Decisões do projeto**
->Todas as escolhas de arquitetura, bibliotecas e padrões, assim como o registro do progresso de cada commit serão documentadas no arquivo DEV_CHOICES.md.
+>
+>Todas as escolhas de arquitetura, bibliotecas e padrões, assim como o registro do progresso de cada commit serão documentadas no arquivo **DEV_CHOICES.md**.
 >Lá você encontra justificativas completas alinhadas aos critérios de avaliação.
+>
+> **ATENÇÃO: A MOCKAGEM DA API SÓ FUNCIONA EM AMBIENTE DE DESENVOLVIMENTO**
+>
 
 ## Contexto do desafio
 Implementar duas user stories em uma única aplicação coesa:

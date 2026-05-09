@@ -39,6 +39,14 @@ Seguindo o pressuposto de não adicionar itens não avaliados:
 
 Os commits serão registrados seguindo a convenção em inglês.
 
-## 2.1. Primeiro Commit
+### 2.1. Primeiro Commit
 
 Estruturação do projeto com scaffolding do Vite, instalação e configuração do Tailwind, exclusão de boilerplate desnecessária, começo da estruturação do processo e ambiente de desenvolvimento definindo padrões de projeto e automatização de rotinas e scripts para a manutenção da qualidade de código com formatação, linting e checagem da tipagem incluindo regras de formatação para diferentes IDEs com .editorconfig.
+
+### 2.2. 2º Commit
+
+Instalação e configuração do Redux Toolkit utilizando sua convenção oficial para tipagem global dinâmica. Separação de hooks de store dentro de "./src/store" para melhor legibilidade. Adicionado script para linting com correções automatizadas. 
+
+### 2.3. 3º Commit
+
+Instalação do MSW (para mockagem da API) e estruturação das pastas. Declaração do enableMocking() no main.tsx com funcionalidade e importação ocorrendo apenas no ambiente de desenvolvimento (evitando o uso de eventuais pastas/arquivos adicionais entrarem em um eventual bundle de produção). Como se trata de uma aplicação enxuta para um teste que não envolverá mais funções de startup, também optei por não separar a lógica de inicialização do arquivo ./src/main.tsx .
