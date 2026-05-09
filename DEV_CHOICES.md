@@ -40,6 +40,8 @@ Seguindo o pressuposto de não adicionar itens não avaliados:
 
 Os commits serão registrados seguindo a convenção em inglês.
 
+A sequência a seguir apresenta pulos pois descreve os commits mais relevantes para o registro de pensamentos e progresso de desenvolvimento e exclui commits baseados em correções e formatações.
+
 ### 2.1. Primeiro Commit
 
 Estruturação do projeto com scaffolding do Vite, instalação e configuração do Tailwind, exclusão de boilerplate desnecessária, começo da estruturação do processo e ambiente de desenvolvimento definindo padrões de projeto e automatização de rotinas e scripts para a manutenção da qualidade de código com formatação, linting e checagem da tipagem incluindo regras padronização da formatação para diferentes IDEs com .editorconfig.
