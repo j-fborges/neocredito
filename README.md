@@ -11,14 +11,14 @@ Projeto desenvolvido como parte do processo seletivo para a vaga de Desenvolvedo
 > **ATENÇÃO: A MOCKAGEM DA API SÓ FUNCIONA EM AMBIENTE DE DESENVOLVIMENTO**
 >
 
-## Contexto do desafio
+## 1. Contexto do desafio
 Implementar duas user stories em uma única aplicação coesa:
 - US-01: Painel de Acompanhamento do CORBAN
 - US-02: Validação do Dossiê de Assinatura
 
-### US-01: Painel de Acompanhamento do CORBAN
+### 1.1. US-01: Painel de Acompanhamento do CORBAN
 
-Diagrama de relações entre Atores, ações e Painel de Acompanhamento do CORBAN:
+Diagrama de relações entre Atores, Ações e Evento e Painel de Acompanhamento do CORBAN:
 
 ```mermaid
 sequenceDiagram
@@ -27,11 +27,10 @@ sequenceDiagram
     actor Cl as Cliente
     participant S as Sistema<br>(Painel de Acompanhamento do CORBAN)
 
-    Note over O, S: INÍCIO US-01 // Fase de geração do link
+    activate S
     activate O
     O->>S: Gera link para Assinatura para proposta/CORBAN #123
     deactivate O
-    activate S
     S-->>O: Link gerado
     deactivate S
     activate O
@@ -39,16 +38,29 @@ sequenceDiagram
     O->>C: Envia link para Assinatura
     deactivate O
     activate C
-    Note over O,C: O CORBAN recebe o link<br>Status: Aguardando assinatura.
+    Note over O, C: O CORBAN recebe o link<br>Status: Aguardando assinatura.
 
+    C->>S: Acessa o Painel de Acompanhamento
+    Note over O, S: INÍCIO US-01
+    activate S
+    S-->>C: Exibe listagem de propostas com as informações:<br>• Número da proposta,<br>• Nome do Cliente,<br>• Status da assinatura,<br>• Data/Hora último evento de assinatura
 
-    C->>Cl: Contata cliente e repassa o link
+    Note over C, S: O CORBAN pode filtrar por status,<br>buscar por nome do cliente ou nº da proposta
+
+    C->>S: Clica na proposta para ver detalhes
+    activate S
+    Note over S,C: Abre painel de detalhes:<br>• Link gerado<br>• Data de envio<br>• Log de tentativas de contato (Qual o conteúdo do log???)
+    S-->>C:
+    deactivate S
+
+    C->>Cl: Contata cliente e repassa o link (WhatsApp, SMS, E-mail ?? Qual o meio de contato???)
     deactivate C
     activate Cl
     loop Tentativas de contato
         C->>Cl: Envia link
+        C->>S: CORBAN Atualiza log???
     end
-    Note over C,S: Log de Tentativas de Contato
+    Note over C, S: Log de Tentativas de Contato visível no painel de detalhes
 
     Cl-->>S: Acessa link e assina (ou recusa, ou expira)
     deactivate Cl
@@ -57,29 +69,94 @@ sequenceDiagram
     opt Cliente assina com sucesso
         Cl->>S: Realiza assinatura eletrônica
         S->>S: Atualiza status → "Assinado"
-        S-->>C: Painel CORBAN: notificação visual + badge
+        S-->>C: Painel CORBAN: notificação visual + badge (em tempo real)
     end
 
-    opt Cliente recusa ou ocorre falha
-        Cl->>S: Recusa / falha
+    opt Cliente recusa
+        Cl->>S: Recusa
         S->>S: Atualiza status → "Recusado"
         S-->>C: Painel CORBAN: badge de recusa
     end
 
-    opt Link expira sem ação
+    opt Assinatura expira sem ação
         S->>S: Timeout → status "Expirado"
         S-->>C: Painel CORBAN: badge de expirado
     end
 
-    Note over C, S: CORBAN visualiza status em tempo real sem necessidade de contatar a Operação
+    Note over C, S: CORBAN confere o novo status na listagem,<br>sem precisar contatar a Operação.
 
     S->>O: Atualização automática da Operação
     deactivate S
     activate O
     Note over S, O: FIM US-01 // Proposta segue automaticamente para esteira de análise
 
-    O->>O: INÍCIO US-02
+    O->>O: INÍCIO US-02??
     deactivate O
+```
+
+### 1.2. US-02: Painel de Validação do Dossiê de Assinatura
+
+Diagrama de relações entre Atores, Ações e Evento e Painel de Validação do Dossiê de Assinatura:
+
+```mermaid
+
+sequenceDiagram
+    actor O as Operador
+    participant S as Sistema<br>(Painel de Validação - Dossiê de Assinatura)
+
+    O-->>S: Acessa painel de Validação do Dossiê de Assinatura<br>(??A partir de lista/link de Assinaturas com Validação Pendentes??)
+
+    Note over O, S: INÍCIO US-02<br/>Proposta de E-Assinatura pronta para validação
+
+    activate S
+    S-->>O: Exibe tela do dossiê com dados do assinante, selfie, documento e pontuação.
+    activate O
+    S-->>O: Exibe Dados da Proposta?? (Número da Proposta e Status??)
+    deactivate S
+
+    Note over O: Inicia a inspeção.
+    O->>S: Inspeciona Dados do assinante:<br>• Nome Completo,<br>• CPF,<br>• Data de Assinatura,<br>• IP de origem.
+    O->>S: Inspeciona Geolocacalização
+    Note over O,S: Navega em mapa embutido.
+
+    O->>S: Inspeciona Imagens de Selfie e Documento e Pontuação de Similaridade Facial.
+    Note over O,S: Dá Zoom nas images de Selfie e Documento
+
+    O->>O: Analisa se está dentro da política
+
+    Note over O,S: Decide sobre a validação da assinatura digital
+    deactivate O
+
+    alt Operador aprova dossiê
+        activate O
+        O->>S: Clica em "Aprovado — dentro da política"
+        activate S
+        S-->>O: Feedback visual de sucesso (Sem Diálogo de confirmação???)
+        deactivate S
+        deactivate O
+        activate S
+        S->>S: Altera status para "Aguardando Auditoria"
+        deactivate S
+        Note over O, S: Proposta segue para esteira de auditoria
+    else Operador reprova dossiê
+        activate O
+        O->>S: Clica em "Reprovado — fora da política"
+        activate S
+        S-->>O: Abre modal para informar motivo e pendência
+        deactivate S
+        O->>S: Preenche motivo motivo e pendência,  e confirma
+        deactivate O
+        activate S
+        S->>S: Altera status para "Pendente"
+        S-->>O: Feedback visual de pendência criada
+        deactivate S
+        Note over O, S: Proposta volta para correção
+    end
+
+    Note over O, S: FIM US-02<br/>Sem download/upload de ZIP, tudo dentro do sistema
+        S-->>S: ?? Exibe botão de "Analizar Próxima Assinatura"??
+        O-->>O: ?? Volta para lista de "Assinaturas com Validação Pendente"??
+
 ```
 
 ## Stack
