@@ -57,3 +57,15 @@ Instalação do MSW (para mockagem da API) e estruturação das pastas. Declara�
 ### 2.4. 4º Commit
 
 Instalação e configuração da estrutura de testes unitários com Vitest e React Testing Library + Matchers do Jest. Instalação e configuração do Husky e lint-staged + rotinas de CI. Com isso criamos um fluxo de desenvolvimento e checagens automatizadas para qualidade de código pre commit e no repositório do github a cada push.
+
+### 2.5. 5º a 8º Commit
+
+Desenho de diagramas (em notação `Mermaid`) de relações entre Atores, Ações e Eventos para cada User Story de forma a embasar o desenho de wireframes.
+
+Os diagramas envolvem todo o fluxo de uso de cada uma das telas (Painel de Validação do Dossiê de Assinatura e Painel de Acompanhamento do CORBAN) incluindo o levantamento de possíveis ações prévias e seguintes aos User Stories US-01 e US-02 para melhor visualização das necessidades de desenvolvimento, incluindo os modelos de entidades para a tipagem de objetos.
+
+### 2.6. 9º Commit
+
+Desenho de diagramas para a modelagem da tipagem de entidades e enums priorizando design escalável a partir do levantamento de variáveis, separação de responsabilidades e intersecção das user stories. Desenho de driagramas para a modelagem da tipagem dos estados client com Redux store e Slices.
+
+A abstração da entidade Pessoa não trará diferenças na implementação das user stories já que cada uma das telas possui objetivos de demonstração bem concisos mas demonstra o uso de tipagem avançada, um dos critérios de avaliação.

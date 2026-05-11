@@ -12,13 +12,16 @@ Projeto desenvolvido como parte do processo seletivo para a vaga de Desenvolvedo
 >
 
 ## 1. Contexto do desafio
+
 Implementar duas user stories em uma única aplicação coesa:
 - US-01: Painel de Acompanhamento do CORBAN
 - US-02: Validação do Dossiê de Assinatura
 
-### 1.1. US-01: Painel de Acompanhamento do CORBAN
+### 1.1. Diagramas de relações entre Atores, Ações e Eventos das User Stories
 
-Diagrama de relações entre Atores, Ações e Evento e Painel de Acompanhamento do CORBAN:
+### 1.1.1. US-01: Painel de Acompanhamento do CORBAN
+
+Diagrama de relações entre Atores, Ações e Eventos e Painel de Acompanhamento do CORBAN:
 
 ```mermaid
 sequenceDiagram
@@ -94,9 +97,9 @@ sequenceDiagram
     deactivate O
 ```
 
-### 1.2. US-02: Painel de Validação do Dossiê de Assinatura
+### 1.1.2. US-02: Painel de Validação do Dossiê de Assinatura
 
-Diagrama de relações entre Atores, Ações e Evento e Painel de Validação do Dossiê de Assinatura:
+Diagrama de relações entre Atores, Ações e Eventos e Painel de Validação do Dossiê de Assinatura:
 
 ```mermaid
 
@@ -158,6 +161,120 @@ sequenceDiagram
         O-->>O: ?? Volta para lista de "Assinaturas com Validação Pendente"??
 
 ```
+### 1.2. Diagramas de Modelagem de entidades e estados Client(para tipagem)
+
+### 1.2.1. Diagrama de Modelagem de entidades
+
+```mermaid
+
+classDiagram
+    class Cliente {
+        <<abstract>>
+        +nomeCompleto: string
+        +cpf: string
+    }
+
+    class Proposta {
+        +id: string
+        +numero: string
+        +status: StatusAssinatura
+        +ultimoEvento: string
+        +notificacao: boolean
+    }
+
+    class PropostaDetalhes {
+        +linkAssinatura: string
+        +dataEnvio: string
+        +tentativasContato: TentativaContato[]
+    }
+
+    class DadosAssinante {
+        +dataAssinatura: string
+        +ip: string
+        +coordenadas: Coordenadas
+        +endereco: string
+    }
+
+    class Dossie {
+        +idProposta: string
+        +selfieUrl: string
+        +documentoUrl: string
+        +similaridadeFacial: number
+        +statusValidacao: StatusDossie
+    }
+
+    class Coordenadas {
+        +lat: number
+        +lon: number
+    }
+
+    class TentativaContato {
+        +data: string
+        +meio: string
+        +observacao: string
+    }
+
+    class StatusAssinatura {
+        <<enumeration>>
+        AGUARDANDO
+        ASSINADO
+        RECUSADO
+        EXPIRADO
+    }
+
+    class StatusDossie {
+        <<enumeration>>
+        PENDENTE_VALIDACAO
+        APROVADO_AGUARDANDO_AUDITORIA
+        REPROVADO_PENDENTE
+    }
+
+    Cliente <|-- Proposta : estende
+    Cliente <|-- DadosAssinante : estende
+    Proposta <|-- PropostaDetalhes : estende
+    Proposta "1" --> "*" TentativaContato : contém
+    Dossie "1" --> "1" DadosAssinante : compõe
+    Dossie "1" --> "1" Coordenadas : compõe (via DadosAssinante)
+    Proposta --> StatusAssinatura : usa
+    Dossie --> StatusDossie : usa
+
+```
+
+### 1.2.2. Diagrama para estados Client - Redux Store e Slices
+
+```mermaid
+
+classDiagram
+    class RootState {
+        +propostas: PropostasState
+        +dossie: DossieState
+    }
+
+    class PropostasState {
+        +Proposta[] lista
+        +PropostaDetalhes? detalhe
+        +StatusAssinatura? filtroStatus
+        +string termoBusca
+        +boolean loadingLista
+        +boolean loadingDetalhe
+        +string? erro
+    }
+
+    class DossieState {
+        +Dossie? dossie
+        +boolean loading
+        +string? erro
+        +StatusDossie? decisao
+        +MotivoReprovacao? motivoReprovacao
+        +boolean confirmandoAprovacao
+        +boolean reprovando
+    }
+
+    RootState *-- PropostasState
+    RootState *-- DossieState
+
+```
+
 
 ## Stack
 - Vite
