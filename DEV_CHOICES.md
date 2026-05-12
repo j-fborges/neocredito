@@ -3,6 +3,13 @@
 > Relatório de decisões de arquitetura, ferramentas e qualidade adotadas durante o desenvolvimento do teste prático.  
 > Cada escolha foi orientada pelos critérios de avaliação, simplicidade e alinhamento com as "dores" descritas nas user stories.
 
+> [!NOTE]
+> Para o desenvolvimento utilizarei inglês, mas estou usando português para os diagramas em `./docs/diagrams/` e na documentação como uma forma de elaborar conceitualmente sobre a estrutura do projeto utilizando a mesma linguagem do enunciado do desafio. Da mesma forma existem campos listados nos diagramas que por motivos que listei adiante não foram incluídos no código.
+> 
+> Optei por utilizar inglês como base do desenvolvimento seguindo o padrão da industria e facilitando a aderência a convenções de arquitetura e boas práticas.
+> 
+
+
 ---
 
 ## 1. Pre‑setup do projeto
@@ -26,12 +33,13 @@ Por isso:
 
 ---
 
-### 1.2. O que ficará de fora
+### 1.2. O que ficará de fora ( ou "O que eu faria diferente se não fosse um teste")
 
 Seguindo o pressuposto de não adicionar itens não avaliados:
+- Normalmente (em projetos que sou responsável pela modelagem de entidades), eu definiria um campo `id` para todo objeto de domínio próprio. Mas, como não foi incluso nos campos para dos objetos descritos no teste, e tratando-se de um teste de front-end, não incluirei esse campo.
 - Não haverá deploy. Por isso não haverão rotinas de CD apesar de rotinas CI estarem presentes.
 - Por não haver deploy também não haverão branches além da Main.
-- Não adicionarei traduções ou estilização complexa.
+- Não adicionarei internacionalização (i18n) ou estilização complexa, pois não faz sentido.
 - Sem persistencia de dados.
 
 ---
@@ -68,4 +76,8 @@ Os diagramas envolvem todo o fluxo de uso de cada uma das telas (Painel de Valid
 
 Desenho de diagramas para a modelagem da tipagem de objetos, instancias e enums priorizando design escalável a partir do levantamento de variáveis, separação de responsabilidades e intersecção das user stories. Desenho de driagramas para a tipagem dos estados client com Redux store e Slices.
 
-A abstração da tipagem `Cliente` não trará diferenças na implementação das user stories já que cada uma das telas possui objetivos de demonstração bem concisos e distintos mas demonstra o uso de tipagem avançada, um dos critérios de avaliação.
+A entidade "Cliente" (no código, instância de tipagem `Customer`) aparece na descrição do desafio de forma superficial e em ambas User Stories apenas existe como informação acessória dos domínios "Proposta" e "Dossiê" — essas duas últimas poderiam apenas estender "Cliente". Preferi fazer uma relação de composição entre os tipos, porque acredito que descrevem melhor a relação entre cada objeto e resulta em uma estrutura escalável.
+
+### 2.7. 12º Commit
+
+OBS: O padrão `as const` usado nos tipos de `./src/types/signingProposal.ts` é preferível a um simples `type` ou `enum` porque centraliza tipo e valor de execução em uma única fonte de verdade (ex: `ESignStatus` é o tipo usado na checagem de valores e `ESIGN_STATUS` é utilizado para a indexação desses valores), eliminando duplicação e o risco de inconsistências futuras. Diferentemente do `enum`, não gera código JavaScript extra (na transpilação) nem enfrenta problemas de interoperabilidade com bundlers modernos mantendo a manutenibilidade sem custo real de runtime. O padrão também segue a natureza **estrutural** da linguagem Typescript evitando as suas exceções de recursos nominais como o `enum` (que tem seu uso desencorajado pela comunidade do Typescript moderno hoje)

@@ -2,7 +2,7 @@
 
 classDiagram
     class Cliente {
-        <<abstract>>
+        +id: string
         +nomeCompleto: string
         +cpf: string
     }
@@ -29,7 +29,8 @@ classDiagram
     }
 
     class Dossie {
-        +idProposta: string
+        +id: string
+        +numeroProposta: string
         +selfieUrl: string
         +documentoUrl: string
         +similaridadeFacial: number
@@ -42,13 +43,14 @@ classDiagram
     }
 
     class TentativaContato {
+        +id: string
         +data: string
         +meio: string
         +observacao: string
     }
 
     class StatusAssinatura {
-        <<enumeration>>
+        <<enum>>
         AGUARDANDO
         ASSINADO
         RECUSADO
@@ -56,15 +58,15 @@ classDiagram
     }
 
     class StatusDossie {
-        <<enumeration>>
+        <<enum>>
         PENDENTE_VALIDACAO
         APROVADO_AGUARDANDO_AUDITORIA
         REPROVADO_PENDENTE
     }
 
-    Cliente <|-- Proposta : estende
-    Cliente <|-- DadosAssinante : estende
-    Proposta <|-- PropostaDetalhes : estende
+    Cliente --|> Proposta : compõe
+    Cliente --|> DadosAssinante : compõe
+    Proposta <|-- PropostaDetalhes : compõe
     Proposta "1" --> "*" TentativaContato : contém
     Dossie "1" --> "1" DadosAssinante : compõe
     Dossie "1" --> "1" Coordenadas : compõe (via DadosAssinante)
