@@ -64,8 +64,8 @@ Desenho de diagramas (em notação `Mermaid`) de relações entre Atores, Açõe
 
 Os diagramas envolvem todo o fluxo de uso de cada uma das telas (Painel de Validação do Dossiê de Assinatura e Painel de Acompanhamento do CORBAN) incluindo o levantamento de possíveis ações prévias e seguintes aos User Stories US-01 e US-02 para melhor visualização das necessidades de desenvolvimento, incluindo os modelos de entidades para a tipagem de objetos.
 
-### 2.6. 9º Commit
+### 2.6. 9º a 11º Commit
 
-Desenho de diagramas para a modelagem da tipagem de entidades e enums priorizando design escalável a partir do levantamento de variáveis, separação de responsabilidades e intersecção das user stories. Desenho de driagramas para a modelagem da tipagem dos estados client com Redux store e Slices.
+Desenho de diagramas para a modelagem da tipagem de objetos, instancias e enums priorizando design escalável a partir do levantamento de variáveis, separação de responsabilidades e intersecção das user stories. Desenho de driagramas para a tipagem dos estados client com Redux store e Slices.
 
-A abstração da entidade Pessoa não trará diferenças na implementação das user stories já que cada uma das telas possui objetivos de demonstração bem concisos mas demonstra o uso de tipagem avançada, um dos critérios de avaliação.
+A abstração da tipagem `Cliente` não trará diferenças na implementação das user stories já que cada uma das telas possui objetivos de demonstração bem concisos e distintos mas demonstra o uso de tipagem avançada, um dos critérios de avaliação.
