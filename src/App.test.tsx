@@ -30,7 +30,9 @@ describe("App", () => {
       </Provider>,
     );
 
-    expect(screen.getByText("Painel CORBAN")).toBeInTheDocument();
+    expect(
+      screen.getByText("Painel de Acompanhamento do CORBAN"),
+    ).toBeInTheDocument();
   });
 
   it("renders the Corban panel directly on /us-01", () => {
@@ -42,7 +44,9 @@ describe("App", () => {
       </Provider>,
     );
 
-    expect(screen.getByText("Painel CORBAN")).toBeInTheDocument();
+    expect(
+      screen.getByText("Painel de Acompanhamento do CORBAN"),
+    ).toBeInTheDocument();
   });
 
   it("shows a not found page for unknown routes", () => {
