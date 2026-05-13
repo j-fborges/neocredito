@@ -38,6 +38,7 @@ Por isso:
 Seguindo o pressuposto de não adicionar itens não avaliados:
 - Normalmente (em projetos que sou responsável pela modelagem de entidades), eu definiria um campo `id` para todo objeto de domínio próprio. Mas, como não foi incluso nos campos para dos objetos descritos no teste, e tratando-se de um teste de front-end, não incluirei esse campo.
 - Não haverá deploy. Por isso não haverão rotinas de CD apesar de rotinas CI estarem presentes.
+- Não adicionarei taxa mínima de cobertura de testes nem para Husky nem para CI.
 - Por não haver deploy também não haverão branches além da Main.
 - Não adicionarei internacionalização (i18n) ou estilização complexa, pois não faz sentido.
 - Sem persistencia de dados.
@@ -72,12 +73,20 @@ Desenho de diagramas (em notação `Mermaid`) de relações entre Atores, Açõe
 
 Os diagramas envolvem todo o fluxo de uso de cada uma das telas (Painel de Validação do Dossiê de Assinatura e Painel de Acompanhamento do CORBAN) incluindo o levantamento de possíveis ações prévias e seguintes aos User Stories US-01 e US-02 para melhor visualização das necessidades de desenvolvimento, incluindo os modelos de entidades para a tipagem de objetos.
 
-### 2.6. 9º a 11º Commit
+### 2.6. 9º a 10º Commit
 
 Desenho de diagramas para a modelagem da tipagem de objetos, instancias e enums priorizando design escalável a partir do levantamento de variáveis, separação de responsabilidades e intersecção das user stories. Desenho de driagramas para a tipagem dos estados client com Redux store e Slices.
 
 A entidade "Cliente" (no código, instância de tipagem `Customer`) aparece na descrição do desafio de forma superficial e em ambas User Stories apenas existe como informação acessória dos domínios "Proposta" e "Dossiê" — essas duas últimas poderiam apenas estender "Cliente". Preferi fazer uma relação de composição entre os tipos, porque acredito que descrevem melhor a relação entre cada objeto e resulta em uma estrutura escalável.
 
-### 2.7. 12º Commit
+### 2.7. 11º Commit
+
+Criado as tipagens globais para a User Story US-01. Criado e testado os handlers para a API mockada do MWS com 13 registros de Propostas de Assinatura. Adicionado relatorios automatizados de coberturas de teste para o Vitest.
 
 OBS: O padrão `as const` usado nos tipos de `./src/types/signingProposal.ts` é preferível a um simples `type` ou `enum` porque centraliza tipo e valor de execução em uma única fonte de verdade (ex: `ESignStatus` é o tipo usado na checagem de valores e `ESIGN_STATUS` é utilizado para a indexação desses valores), eliminando duplicação e o risco de inconsistências futuras. Diferentemente do `enum`, não gera código JavaScript extra (na transpilação) nem enfrenta problemas de interoperabilidade com bundlers modernos mantendo a manutenibilidade sem custo real de runtime. O padrão também segue a natureza **estrutural** da linguagem Typescript evitando as suas exceções de recursos nominais como o `enum` (que tem seu uso desencorajado pela comunidade do Typescript moderno hoje)
+
+### 2.8. 12º Commit
+
+Estruturação do Slice `SigningProposalSlice.ts` para a User Story `US-01` com **Thunks Assíncronos** para as chamadas da API mockada. Usarei uma lista simples de Propostas de Assinatura com objetos contendo todas as informações necessarias para a tela. Manterei salvos no estado do **Redux Store** as `searchTerm` e `statusFilter` em nome da usabilidade, levando em consideração que é uma tela de trabalho. (Por ser uma SPA o estado ficará salvo) Contudo, as chamadas para a API mockada serão feitas com valores de estado gerenciado pelo Context de cada componente. (Isso simplifica a usabilidade enquanto os estados do Redux Store servirão como valores iniciais pros estados Context dos componentes). Testagem do Slice.
+
+OBS: Optei por repetir a chamada `fetchSigningProposals` em mudanças de filtro e busca, ao invés de filtrar uma lista previamente carregada, pois isso manteria a tela atualizada automaticamente com informações do backend em jornadas mais longas de uso. Como o volume de informação é enxuto, para uso interno, e podendo recorrer a paginação, essa abordagem não sobrecarregaria a API.

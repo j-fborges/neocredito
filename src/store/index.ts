@@ -1,7 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 
+import SigningProposalsReducer from "./SigningProposalSlice";
+
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    signingProposals: SigningProposalsReducer,
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
