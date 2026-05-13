@@ -108,3 +108,7 @@ Separação de responsabilidades: Nesse momento `./src/main.tsx` contem a config
 Primeira iteração de componentes da página do `Painel de Acompanhamento do CORBAN` (US-01) incluindo listagem e filtros de busca integrados com o Redux Slice correspondente. Criação de hook `useDebounce.ts` para diminuir o volume de requisições desnecessárias para a API mockada enquanto o usuário digita sua busca por `Nome de Cliente` ou `Número da Proposta`. A componentização foi estruturada a partir a separação de responsabilidades: `CorbanPannel.tsx` orquestra mudanças de estado, `ProposalContent.tsx` lida com condicionais de *erro* e *loading* , `ProposalList.tsx` itera sobre registros (e no futuro pagina), `ProposalRow.tsx` renderiza informações e lida com eventos de clique (seleção de Proposta), `StatusBadge.tsx` lida com a lógica dos ícones sinalização de status da proposta.
 
 Testagem unitária de componentes a partir do `./src/pages/CorbanPannel.tsx`.
+
+### 2.11. 17º Commit
+
+Adicionado Modal de Detalhes das Propostas de Assinatura, com informações sobre os clientes, datas, link de assinatura e lista de tentativas de contato. Refatoração de `FilterBar.tsx` e desacoplamento (componentização) de `StatusFilterSelect.tsx`.

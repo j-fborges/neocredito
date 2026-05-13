@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 
+import DetailsModal from "../components/eSignProposal/DetailsModal";
 import FilterBar from "../components/eSignProposal/FilterBar";
 import ProposalContent from "../components/eSignProposal/ProposalContent";
 import { useDebounce } from "../hooks/useDebounce";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import {
+  clearSelection,
   fetchSigningProposals,
   selectProposals,
   setSelection,
@@ -14,8 +16,15 @@ import type { ESignStatus, SigningProposal } from "../types/signingProposal";
 
 export default function CorbanPannel() {
   const dispatch = useAppDispatch();
-  const { itens, statusFilter, searchTerm, loading, error } =
-    useAppSelector(selectProposals);
+  const {
+    itens,
+    statusFilter,
+    searchTerm,
+    loading,
+    error,
+    selectedProposal,
+    detailLoading,
+  } = useAppSelector(selectProposals);
 
   const [inputValue, setInputValue] = useState(searchTerm);
   const debouncedSearch = useDebounce(inputValue, 300);
@@ -38,6 +47,10 @@ export default function CorbanPannel() {
     dispatch(setSelection(proposal));
   };
 
+  const handleCloseModal = () => {
+    dispatch(clearSelection());
+  };
+
   return (
     <main
       className="p-6 max-w-6xl mx-auto md:mx-5"
@@ -49,7 +62,6 @@ export default function CorbanPannel() {
       >
         Painel de Acompanhamento do CORBAN
       </h1>
-
       <h2 className="text-xl mb-4 font-sans text-brand-blue-dark">
         Assinaturas Eletrônicas de Propostas em Operação:
       </h2>
@@ -67,6 +79,15 @@ export default function CorbanPannel() {
         itens={itens}
         onRowClick={handleRowClick}
       />
+
+      {selectedProposal && (
+        <DetailsModal
+          proposal={selectedProposal}
+          loading={detailLoading}
+          error={error}
+          onClose={handleCloseModal}
+        />
+      )}
     </main>
   );
 }

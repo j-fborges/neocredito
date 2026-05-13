@@ -1,4 +1,6 @@
-import { ESIGN_STATUS, type ESignStatus } from "../../types/signingProposal";
+import type { ESignStatus } from "../../types/signingProposal";
+
+import StatusFilterSelect from "./StatusFilterSelect";
 
 interface FilterBarProps {
   statusFilter: ESignStatus | null;
@@ -13,25 +15,9 @@ export default function FilterBar({
   inputValue,
   onInputChange,
 }: FilterBarProps) {
-  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const val = e.target.value as ESignStatus | "";
-    onStatusChange(val || null);
-  };
-
   return (
     <div className="flex gap-4 mb-6">
-      <select
-        className="border rounded px-3 py-2"
-        value={statusFilter ?? ""}
-        onChange={handleStatusChange}
-      >
-        <option value="">Todos os status</option>
-        {Object.values(ESIGN_STATUS).map((s) => (
-          <option key={s} value={s}>
-            {s}
-          </option>
-        ))}
-      </select>
+      <StatusFilterSelect value={statusFilter} onChange={onStatusChange} />
       <input
         type="text"
         placeholder="Buscar por nome ou ID..."

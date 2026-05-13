@@ -175,4 +175,30 @@ describe("CorbanPannel", () => {
       expect(screen.queryByText("João Silva")).not.toBeInTheDocument();
     });
   });
+
+  it("opens and closes the details modal when clicking a row", async () => {
+    server.use(
+      http.get("/api/proposals", () => {
+        return HttpResponse.json({ data: mockProposals });
+      }),
+    );
+
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/us-01"]}>
+          <CorbanPannel />
+        </MemoryRouter>
+      </Provider>,
+    );
+
+    const rows = await screen.findAllByRole("row");
+    const firstProposalRow = rows[1];
+    await userEvent.click(firstProposalRow);
+
+    expect(await screen.findByText("123.456.789-00")).toBeInTheDocument();
+    expect(screen.getByLabelText("Fechar modal")).toBeInTheDocument();
+
+    await userEvent.click(screen.getByLabelText("Fechar modal"));
+    expect(screen.queryByText("123.456.789-00")).not.toBeInTheDocument();
+  });
 });
