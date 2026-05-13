@@ -1,17 +1,59 @@
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 
 import App from "./App";
 import { store } from "./store";
 
 describe("App", () => {
-  it("deve renderizar o título da aplicação", () => {
+  it("renders the header with the Neo Crédito logo", () => {
     render(
       <Provider store={store}>
-        <App />
+        <MemoryRouter>
+          <App />
+        </MemoryRouter>
       </Provider>,
     );
-    expect(screen.getByText("Neo Crédito")).toBeInTheDocument();
+
+    const logo = screen.getByAltText("Neo Crédito");
+    expect(logo).toBeInTheDocument();
+    expect(logo.closest("a")).toHaveAttribute("href", "/us-01");
+  });
+
+  it("redirects from / to /us-01 and renders the Corban panel", () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/"]}>
+          <App />
+        </MemoryRouter>
+      </Provider>,
+    );
+
+    expect(screen.getByText("Painel CORBAN")).toBeInTheDocument();
+  });
+
+  it("renders the Corban panel directly on /us-01", () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/us-01"]}>
+          <App />
+        </MemoryRouter>
+      </Provider>,
+    );
+
+    expect(screen.getByText("Painel CORBAN")).toBeInTheDocument();
+  });
+
+  it("shows a not found page for unknown routes", () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/unknown"]}>
+          <App />
+        </MemoryRouter>
+      </Provider>,
+    );
+
+    expect(screen.getByText("Página não encontrada")).toBeInTheDocument();
   });
 });

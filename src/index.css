@@ -1,1 +1,33 @@
 @import "tailwindcss";
+@import "flowbite-react/plugin/tailwindcss";
+@source "../.flowbite-react/class-list.json";
+
+@font-face {
+  font-family: "RadioGrotesk";
+  src: url("./assets/fonts/RadioGrotesk-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "RadioGrotesk";
+  src: url("./assets/fonts/RadioGrotesk-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "OverpassMono";
+  src: url("./assets/fonts/OverpassMono-VariableFont_wght.ttf")
+    format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: "RadioGrotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "OverpassMono", ui-monospace, system-ui;
+  --color-brand-gray: #edefee;
+  --color-brand-blue-dark: #000030;
+}

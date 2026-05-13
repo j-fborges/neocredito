@@ -1,13 +1,13 @@
 # Registro de Decisões e Processo de Desenvolvimento
 
-> Relatório de decisões de arquitetura, ferramentas e qualidade adotadas durante o desenvolvimento do teste prático.  
+> Relatório de decisões de arquitetura, ferramentas e qualidade adotadas durante o desenvolvimento do teste prático.
 > Cada escolha foi orientada pelos critérios de avaliação, simplicidade e alinhamento com as "dores" descritas nas user stories.
 
 > [!NOTE]
 > Para o desenvolvimento utilizarei inglês, mas estou usando português para os diagramas em `./docs/diagrams/` e na documentação como uma forma de elaborar conceitualmente sobre a estrutura do projeto utilizando a mesma linguagem do enunciado do desafio. Da mesma forma existem campos listados nos diagramas que por motivos que listei adiante não foram incluídos no código.
-> 
+>
 > Optei por utilizar inglês como base do desenvolvimento seguindo o padrão da industria e facilitando a aderência a convenções de arquitetura e boas práticas.
-> 
+>
 
 
 ---
@@ -16,7 +16,7 @@
 
 ### 1.1. Decisões sobre arquitetura e estrutura
 
-Tratando‑se de um teste prático, optei por uma solução **sucinta e aderente aos pontos avaliados**, sem adicionar complexidade desnecessária.  
+Tratando‑se de um teste prático, optei por uma solução **sucinta e aderente aos pontos avaliados**, sem adicionar complexidade desnecessária.
 
 As telas correspondem a um **módulo interno de gestão de assinaturas eletrônicas**, com características claras:
 - Informações objetivas e uso administrativo (não há necessidade de SEO ou indexação).
@@ -57,7 +57,7 @@ Estruturação do projeto com scaffolding do Vite, instalação e configuração
 
 ### 2.2. 2º Commit
 
-Instalação e configuração do Redux Toolkit utilizando sua convenção oficial para tipagem global dinâmica. Separação de hooks de store dentro de "./src/store" para melhor legibilidade. Adicionado script para linting com correções automatizadas. 
+Instalação e configuração do Redux Toolkit utilizando sua convenção oficial para tipagem global dinâmica. Separação de hooks de store dentro de "./src/store" para melhor legibilidade. Adicionado script para linting com correções automatizadas.
 
 ### 2.3. 3º Commit
 
@@ -90,3 +90,17 @@ OBS: O padrão `as const` usado nos tipos de `./src/types/signingProposal.ts` é
 Estruturação do Slice `SigningProposalSlice.ts` para a User Story `US-01` com **Thunks Assíncronos** para as chamadas da API mockada. Usarei uma lista simples de Propostas de Assinatura com objetos contendo todas as informações necessarias para a tela. Manterei salvos no estado do **Redux Store** as `searchTerm` e `statusFilter` em nome da usabilidade, levando em consideração que é uma tela de trabalho. (Por ser uma SPA o estado ficará salvo) Contudo, as chamadas para a API mockada serão feitas com valores de estado gerenciado pelo Context de cada componente. (Isso simplifica a usabilidade enquanto os estados do Redux Store servirão como valores iniciais pros estados Context dos componentes). Testagem do Slice.
 
 OBS: Optei por repetir a chamada `fetchSigningProposals` em mudanças de filtro e busca, ao invés de filtrar uma lista previamente carregada, pois isso manteria a tela atualizada automaticamente com informações do backend em jornadas mais longas de uso. Como o volume de informação é enxuto, para uso interno, e podendo recorrer a paginação, essa abordagem não sobrecarregaria a API.
+
+### 2.9. 14º Commit
+
+Configuração de roteamento e primeiras rotas com `react-router-dom`, páginas e componentes da User Story `US-01`.
+
+Como o enunciado do desafio foca nas User Stories fazendo um <u>recorte de fluxo e usabilidade</u> farei apenas duas rotas `/us-01` e `/us-02`.  a **rota raiz** `/` redicionará para `/us-01` enquanto outras rotas inexistentes mostrarão uma mensagem simples de página não encontrada.
+
+Configuração de assets (fontes e ícones) e tokens Tailwind (cores e fontes) para estilização **<u>apenas baseada</u>** na identidade gráfica da home `https://neocredito.com.br/`.
+
+Atualização de testes unitários para `./src/App.tsx` includindo testes para conteúdo e rotas.
+
+Separação de responsabilidades: Nesse momento `./src/main.tsx` contem a configuração de **provedores globais (Redux e Router)** enquanto em `./src/App.tsx` é definido **rotas, layout e componentes**. (Facilitando testagem e manutenção)
+
+
