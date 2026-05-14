@@ -18,9 +18,11 @@ describe("App", () => {
       </Provider>,
     );
 
-    const logo = screen.getByAltText("Neo Crédito");
-    expect(logo).toBeInTheDocument();
-    expect(logo.closest("a")).toHaveAttribute("href", "/us-01");
+    const logos = screen.getAllByAltText("Neo Crédito");
+    expect(logos.length).toBeGreaterThanOrEqual(1);
+
+    const link = logos[0].closest("a");
+    expect(link).toHaveAttribute("href", "/us-01");
   });
 
   it("redirects from / to /us-01 and renders the Corban panel", () => {

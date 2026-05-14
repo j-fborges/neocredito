@@ -17,7 +17,7 @@ export default function FilterBar({
   onInputChange,
 }: FilterBarProps) {
   return (
-    <div className="flex gap-4 mb-6">
+    <div className="flex flex-col sm:flex-row gap-4 mb-6">
       <StatusFilterSelect value={statusFilter} onChange={onStatusChange} />
       <input
         type="text"

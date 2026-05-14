@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import { useEffect, useState, useCallback } from "react";
+import { memo, useEffect, useState, useCallback } from "react";
 
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { removeToast, selectToasts } from "../store/UiSlice";
@@ -10,9 +10,10 @@ const typeStyles: Record<string, string> = {
   info: "bg-blue-500",
 };
 
-export default function ToastContainer() {
+const ToastContainer = memo(function ToastContainer() {
   const dispatch = useAppDispatch();
   const toasts = useAppSelector(selectToasts);
+
   const [exitingIds, setExitingIds] = useState<Set<string>>(new Set());
 
   const scheduleRemoval = useCallback(
@@ -25,7 +26,7 @@ export default function ToastContainer() {
           next.delete(id);
           return next;
         });
-      }, 400);
+      }, 400); // tempo do fade-out
     },
     [dispatch],
   );
@@ -40,13 +41,13 @@ export default function ToastContainer() {
   }, [toasts, exitingIds, scheduleRemoval]);
 
   return (
-    <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 flex flex-col items-center gap-2 pointer-events-none">
+    <div className="pointer-events-none fixed top-4 left-1/2 z-50 flex -translate-x-1/2 flex-col items-center gap-2">
       {toasts.map((toast) => (
         <div
           key={toast.id}
-          className={`flex items-center gap-2 px-4 py-3 rounded-lg shadow-lg text-white pointer-events-auto ${
+          className={`flex items-center gap-2 rounded-lg px-4 py-3 text-white shadow-lg pointer-events-auto ${
             typeStyles[toast.type]
-          } ${exitingIds.has(toast.id) ? "animate-fade-out" : ""}`}
+          } ${exitingIds.has(toast.id) ? "animate-fade-out" : "animate-fade-in"}`}
         >
           <span className="text-sm">{toast.message}</span>
           <button
@@ -60,4 +61,6 @@ export default function ToastContainer() {
       ))}
     </div>
   );
-}
+});
+
+export default ToastContainer;

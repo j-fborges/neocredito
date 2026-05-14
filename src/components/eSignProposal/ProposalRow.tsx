@@ -19,8 +19,8 @@ export default function ProposalRow({ proposal, onClick }: ProposalRowProps) {
       className="border-t hover:bg-gray-50 cursor-pointer transition-colors"
       onClick={() => onClick(proposal)}
     >
-      <td className="p-2">{id}</td>
-      <td className="p-2">
+      <td className="p-1 sm:p-2">{id}</td>
+      <td className="p-1 sm:p-2">
         {customer.fullName}
         {isNew && (
           <span className="ml-2 inline-flex items-center text-green-600 animate-pulse">
@@ -28,10 +28,12 @@ export default function ProposalRow({ proposal, onClick }: ProposalRowProps) {
           </span>
         )}
       </td>
-      <td className="p-2">
+      <td className="p-1 sm:p-2">
         <StatusBadge status={status} pulse={isNew} />
       </td>
-      <td className="p-2">{new Date(lastSigningEvent).toLocaleDateString()}</td>
+      <td className="p-1 sm:p-2">
+        {new Date(lastSigningEvent).toLocaleDateString()}
+      </td>
     </tr>
   );
 }

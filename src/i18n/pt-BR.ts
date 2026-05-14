@@ -40,6 +40,7 @@ export const messages = {
     SIGNED: "Assinado",
     REJECTED: "Recusado",
     EXPIRED: "Expirado",
+    JUST_SIGNED: "Recém Assinado",
   },
   contactMedium: {
     EMAIL: "E-mail",

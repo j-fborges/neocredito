@@ -53,6 +53,26 @@ export const fetchSigningProposals = createAsyncThunk<
   return data.data;
 });
 
+export const fetchSigningProposalsSilently = createAsyncThunk<
+  SigningProposal[],
+  { status?: ESignStatus | null; search?: string } | void
+>("propostas/fetchListSilent", async (filters) => {
+  const params = new URLSearchParams();
+  if (filters) {
+    if (filters.status) params.set("status", filters.status);
+    if (filters.search) params.set("q", filters.search);
+  }
+
+  const res = await fetch(`/api/proposals?${params.toString()}`);
+
+  if (!res.ok) {
+    throw new Error(`Erro ${res.status} ao carregar propostas`);
+  }
+
+  const data: ApiResponse<SigningProposal[]> = await res.json();
+  return data.data;
+});
+
 export const notifyProposal = createAsyncThunk<SigningProposal, string>(
   "propostas/notify",
   async (id) => {
@@ -92,6 +112,15 @@ const SigningProposalSlice = createSlice({
       })
       .addCase(fetchSigningProposals.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.error.message ?? "Error loading proposals";
+      })
+      .addCase(fetchSigningProposalsSilently.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(fetchSigningProposalsSilently.fulfilled, (state, action) => {
+        state.itens = action.payload;
+      })
+      .addCase(fetchSigningProposalsSilently.rejected, (state, action) => {
         state.error = action.error.message ?? "Error loading proposals";
       })
       .addCase(notifyProposal.pending, (state) => {

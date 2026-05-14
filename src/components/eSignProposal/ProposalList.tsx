@@ -12,13 +12,15 @@ export default function ProposalList({ itens, onRowClick }: ProposalListProps) {
   const { table } = messages.proposal;
 
   return (
-    <table className="w-full border-collapse">
+    <table className="sm:w-[100%] w-full border-collapse">
       <thead>
         <tr className="bg-gray-100">
-          <th className="p-2 text-left">{table.headerId}</th>
-          <th className="p-2 text-left">{table.headerCustomer}</th>
-          <th className="p-2 text-left">{table.headerStatus}</th>
-          <th className="p-2 text-left">{table.headerLastEvent}</th>
+          <th className="p-1 sm:p-2 text-left">{table.headerId}</th>
+          <th className="p-1 sm:p-2 text-left">{table.headerCustomer}</th>
+          <th className="p-1 sm:p-2 sm:pl-14 text-left">
+            {table.headerStatus}
+          </th>
+          <th className="p-1 sm:p-2 text-left">{table.headerLastEvent}</th>
         </tr>
       </thead>
       <tbody>

@@ -22,16 +22,16 @@ export default function CorbanPannel() {
 
   return (
     <main
-      className="p-6 max-w-6xl mx-auto md:mx-5"
+      className="p-2 sm:p-6 max-w-6xl mx-auto sm:mx-5"
       aria-labelledby="corban-heading"
     >
       <h1
         id="corban-heading"
-        className="text-2xl font-bold mb-4 font-mono uppercase text-brand-blue-dark"
+        className="leading-6 text-2xl pt-2 pl-1 sm:p-0 font-bold mb-4 font-mono uppercase text-brand-blue-dark"
       >
         {messages.proposal.title}
       </h1>
-      <h2 className="text-xl mb-4 font-sans text-brand-blue-dark">
+      <h2 className="leading-6 text-xl mb-4 font-sans pl-1 sm:p-0 text-brand-blue-dark">
         {messages.proposal.subtitle}
       </h2>
 

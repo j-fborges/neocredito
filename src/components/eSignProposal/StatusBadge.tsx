@@ -17,13 +17,17 @@ export default function StatusBadge({
   status,
   pulse = false,
 }: StatusBadgeProps) {
+  const label = pulse ? messages.status.JUST_SIGNED : messages.status[status];
+
   return (
-    <span
-      className={`inline-block px-2 py-1 rounded text-sm font-medium ${colorMap[status]} ${
-        pulse ? "animate-pulse" : ""
-      }`}
-    >
-      {messages.status[status]}
-    </span>
+    <div className="md:w-[150px] flex flex-row justify-center">
+      <span
+        className={`inline-block px-2 py-1 rounded text-sm font-medium ${colorMap[status]} ${
+          pulse ? "animate-pulse" : ""
+        }`}
+      >
+        {label}
+      </span>
+    </div>
   );
 }
