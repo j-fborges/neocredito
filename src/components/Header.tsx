@@ -25,8 +25,8 @@ export default function Header() {
         </Link>
 
         <Link
-          to={isOnUS01 ? "/us-02" : "/us-01"}
-          className="ml-2 sm:ml-0 mr-0 md:mr-14 px-1  sm:px-4 py-2 rounded bg-gray-400 text-white hover:bg-opacity-90 text-sm font-medium transition-colors hover:text-brand-blue-dark flex flex-row items-center h-8 gap-2 text-center leading-4"
+          to={isOnUS01 ? "/us-02/101" : "/us-01"}
+          className="ml-2 sm:ml-0 mr-0 md:mr-14 px-1  sm:px-4 py-2 rounded bg-gray-400 text-white hover:bg-opacity-90 text-sm font-medium transition-colors hover:text-brand-blue-dark flex flex-row items-center gap-2 text-center leading-4 h-auto"
         >
           {isOnUS01 ? "Dossiê Validação (US-02)" : "Painel CORBAN (US-01)"}
           <img

@@ -141,3 +141,9 @@ Criação da rota `/us-02` e botão de navegação entre *User Stories*, Criaç�
 ### 2.17. 24º Commit
 
 Estruturação da tipagem para os *Dossiês de Assinatura*, **endpoints e handlers** para a API mockada servir `ESignDossier`. Criação e estruturação de Slice para controle de estados dos *Dossiês* com *actions* para chamadas da API mockada. Refatoração dos arquivos de tipagem prévios. Novos testes para os novos *handlers endpoints* do *MWS*.
+
+### 2.18. 26º Commit
+
+Primeira iteração dinâmica do *Painel de Validação do Dossiê de Assinatura*, disposição das primeiras informações, gerenciamento de estado básico com cobertura condicional para `loading` e `error` a partir de requisição através do **Thunk do Slice de Dossiês** estruturado no commit anterior. Configuração de rota `react-router` integrada ao endpoint do *MWS* aceitando `URL Query Params` (no caso o *Nº da Proposta/Dossiê* - `id`). Testagem básica de `ESignDossierPanel.tsx`.
+
+Adicionado `npm run build` ao `pre-commit` do **Husky**.

@@ -11,7 +11,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/us-01" element={<CorbanPanel />} />
-        <Route path="/us-02" element={<ESignDossierPanel />} />
+        <Route path="/us-02/:id" element={<ESignDossierPanel />} />
         <Route path="/" element={<Navigate to="/us-01" replace />} />
         <Route path="*" element={<p>Página não encontrada</p>} />
       </Routes>
