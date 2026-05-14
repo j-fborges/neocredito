@@ -9,7 +9,7 @@ import { server } from "../mocks/server";
 import { store } from "../store";
 import type { SigningProposal } from "../types/signingProposal";
 
-import CorbanPannel from "./CorbanPannel";
+import CorbanPanel from "./CorbanPanel";
 
 const mockProposals: SigningProposal[] = [
   {
@@ -53,7 +53,7 @@ const mockProposals: SigningProposal[] = [
   },
 ];
 
-describe("CorbanPannel", () => {
+describe("CorbanPanel", () => {
   afterEach(() => {
     server.resetHandlers();
   });
@@ -62,7 +62,7 @@ describe("CorbanPannel", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/us-01"]}>
-          <CorbanPannel />
+          <CorbanPanel />
         </MemoryRouter>
       </Provider>,
     );
@@ -89,7 +89,7 @@ describe("CorbanPannel", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/us-01"]}>
-          <CorbanPannel />
+          <CorbanPanel />
         </MemoryRouter>
       </Provider>,
     );
@@ -113,7 +113,7 @@ describe("CorbanPannel", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/us-01"]}>
-          <CorbanPannel />
+          <CorbanPanel />
         </MemoryRouter>
       </Provider>,
     );
@@ -133,7 +133,7 @@ describe("CorbanPannel", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/us-01"]}>
-          <CorbanPannel />
+          <CorbanPanel />
         </MemoryRouter>
       </Provider>,
     );
@@ -165,7 +165,7 @@ describe("CorbanPannel", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/us-01"]}>
-          <CorbanPannel />
+          <CorbanPanel />
         </MemoryRouter>
       </Provider>,
     );
@@ -201,7 +201,7 @@ describe("CorbanPannel", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/us-01"]}>
-          <CorbanPannel />
+          <CorbanPanel />
         </MemoryRouter>
       </Provider>,
     );
@@ -236,7 +236,7 @@ describe("CorbanPannel", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/us-01"]}>
-          <CorbanPannel />
+          <CorbanPanel />
         </MemoryRouter>
       </Provider>,
     );

@@ -9,7 +9,7 @@ import { messages } from "../i18n/pt-BR";
 import { useAppSelector } from "../store/hooks";
 import { selectProposals } from "../store/SigningProposalSlice";
 
-export default function CorbanPannel() {
+export default function CorbanPanel() {
   const { itens, loading, error, selectedProposal, detailLoading } =
     useAppSelector(selectProposals);
 
