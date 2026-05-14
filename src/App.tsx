@@ -6,7 +6,7 @@ import CorbanPannel from "./pages/CorbanPannel";
 
 function App() {
   return (
-    <>
+    <div className="bg-custom-lightgray min-h-screen">
       <Header />
       <Routes>
         <Route path="/us-01" element={<CorbanPannel />} />
@@ -16,7 +16,7 @@ function App() {
         <Route path="*" element={<p>Página não encontrada</p>} />
       </Routes>
       <ToastContainer />
-    </>
+    </div>
   );
 }
 

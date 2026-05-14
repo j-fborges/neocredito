@@ -1,7 +1,7 @@
 import { messages } from "../../i18n/pt-BR";
 import type { ContactAttempt as ContactAttemptType } from "../../types/signingProposal";
 
-import ContactAttempt from "./ContactAttempt";
+import ContactAttemptItem from "./ContactAttemptItem";
 
 interface ContactAttemptListProps {
   attempts: ContactAttemptType[];
@@ -21,7 +21,7 @@ export default function ContactAttemptList({
   return (
     <ul className="list-none space-y-2 mt-1">
       {attempts.map((attempt, idx) => (
-        <ContactAttempt key={idx} attempt={attempt} />
+        <ContactAttemptItem key={idx} attempt={attempt} />
       ))}
     </ul>
   );

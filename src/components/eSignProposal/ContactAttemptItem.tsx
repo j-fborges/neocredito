@@ -15,22 +15,22 @@ function formatDate(isoString: string) {
   });
 }
 
-export default function ContactAttempt({ attempt }: ContactAttemptProps) {
+export default function ContactAttemptItem({ attempt }: ContactAttemptProps) {
   const { fields } = messages.proposal.modal;
   const mediumLabel = messages.contactMedium[attempt.medium];
 
   return (
-    <li className="bg-gray-50 rounded-lg p-3">
+    <li className="bg-gray-200 rounded-lg p-3">
       <dl className="space-y-1">
-        <div className="text-sm text-gray-700">
+        <div className="text-sm text-gray-800">
           <dt className="font-medium inline">{fields.date}:</dt>
           <dd className="inline ml-1">{formatDate(attempt.date)}</dd>
         </div>
-        <div className="text-sm text-gray-700">
+        <div className="text-sm text-gray-800">
           <dt className="font-medium inline">{fields.medium}:</dt>
           <dd className="inline ml-1">{mediumLabel}</dd>
         </div>
-        <div className="text-sm text-gray-700">
+        <div className="text-sm text-gray-800">
           <dt className="font-medium inline">{fields.observation}:</dt>
           <dd className="inline ml-1">{attempt.observation || "—"}</dd>
         </div>

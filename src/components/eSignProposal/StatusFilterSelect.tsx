@@ -17,7 +17,7 @@ export default function StatusFilterSelect({
 
   return (
     <select
-      className="border rounded px-3 py-2"
+      className="rounded border border-gray-300 px-3 py-2 mr-4 bg-custom-gray text-brand-blue-dark cursor-pointer shadow-sm shadow-custom-shadow"
       value={value ?? ""}
       onChange={handleChange}
       aria-label={messages.proposal.filter.statusLabel}

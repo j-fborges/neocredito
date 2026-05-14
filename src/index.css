@@ -30,6 +30,9 @@
   --font-mono: "OverpassMono", ui-monospace, system-ui;
   --color-brand-gray: #edefee;
   --color-brand-blue-dark: #000030;
+  --color-custom-gray: #d6d6d6;
+  --color-custom-lightgray: #f3f3f3;
+  --color-custom-shadow: #00000031;
 }
 
 @keyframes fadeIn {

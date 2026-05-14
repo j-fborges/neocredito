@@ -22,7 +22,7 @@ export default function FilterBar({
       <input
         type="text"
         placeholder={messages.proposal.filter.searchPlaceholder}
-        className="border rounded px-3 py-2 flex-1"
+        className="border rounded px-3 py-2 flex-1 bg-white"
         value={inputValue}
         onChange={(e) => onInputChange(e.target.value)}
       />

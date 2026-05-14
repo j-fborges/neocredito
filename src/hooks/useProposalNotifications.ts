@@ -9,14 +9,6 @@ export function useProposalNotifications(itens: SigningProposal[]) {
   const notifiedIds = useRef<Set<string>>(new Set());
 
   useEffect(() => {
-    // Remove IDs que não estão mais na lista
-    const currentIds = new Set(itens.map((i) => i.id));
-    for (const id of notifiedIds.current) {
-      if (!currentIds.has(id)) {
-        notifiedIds.current.delete(id);
-      }
-    }
-
     itens.forEach((item) => {
       if (
         item.status === "SIGNED" &&

@@ -22,7 +22,7 @@ export default function CorbanPannel() {
 
   return (
     <main
-      className="p-2 sm:p-6 max-w-6xl mx-auto sm:mx-5"
+      className="p-2 sm:p-6 max-w-6xl mx-auto sm:mx-5 min-h-full"
       aria-labelledby="corban-heading"
     >
       <h1

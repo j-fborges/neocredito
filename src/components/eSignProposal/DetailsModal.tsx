@@ -21,12 +21,14 @@ export default function DetailsModal({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 max-w-lg w-full max-h-[80vh] overflow-auto">
+      <div className="bg-custom-lightgray rounded-lg p-6 max-w-lg w-full max-h-[80vh] overflow-auto">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-bold">{modal.title}</h2>
+          <h2 className="text-lg font-bold text-brand-blue-dark">
+            {modal.title}
+          </h2>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-black cursor-pointer"
+            className="text-gray-500 hover:text-brand-blue-dark cursor-pointer"
             aria-label={modal.close}
           >
             <X size={24} />

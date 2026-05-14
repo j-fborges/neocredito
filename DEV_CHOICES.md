@@ -125,3 +125,7 @@ Implementação de *Polling* para atualizar a lista de Assinaturas em intervalos
 ### 2.14. 20º Commit
 
 Ajustes de responsividade para a tela da User Story `US-01`. Criação de Refetch silencioso para atualização da lista de proposta pelo Polling sem piscar a tela.
+
+### 2.15. 21º Commit
+
+Estilização e refatoração do código para consistencia visual e principalmente **ergonomia**. Por ser uma tela de trabalho, ela precisa ser pouco cansativa visualmente, preferencialmente usando pouco contraste. Por isso a estilização adotou tons de cinza como base. Além disso foi adicionado intercalamento de cores nas linhas da tabela de Propostas de Assinatura para maior leiturabilidade da tabela.

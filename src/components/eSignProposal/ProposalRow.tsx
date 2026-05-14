@@ -5,18 +5,26 @@ import StatusBadge from "./StatusBadge";
 interface ProposalRowProps {
   proposal: SigningProposal;
   onClick: (proposal: SigningProposal) => void;
+  index: number;
 }
 
-export default function ProposalRow({ proposal, onClick }: ProposalRowProps) {
+export default function ProposalRow({
+  proposal,
+  onClick,
+  index,
+}: ProposalRowProps) {
   const { id, customer, status, lastSigningEvent, notifiable, notified } =
     proposal;
-
-  // Exibe o indicador de novo apenas para propostas notificáveis, assinadas e não lidas
   const isNew = notifiable && status === "SIGNED" && !notified;
+  const isEven = index % 2 === 0;
 
   return (
     <tr
-      className="border-t hover:bg-gray-50 cursor-pointer transition-colors"
+      className={`border-t cursor-pointer transition-colors ${
+        isEven
+          ? "bg-custom-lightgray hover:bg-blue-50"
+          : "bg-gray-200 hover:bg-blue-50"
+      }`}
       onClick={() => onClick(proposal)}
     >
       <td className="p-1 sm:p-2">{id}</td>
@@ -29,7 +37,7 @@ export default function ProposalRow({ proposal, onClick }: ProposalRowProps) {
         )}
       </td>
       <td className="p-1 sm:p-2">
-        <StatusBadge status={status} pulse={isNew} />
+        <StatusBadge status={status} pulse={isNew} centralized />
       </td>
       <td className="p-1 sm:p-2">
         {new Date(lastSigningEvent).toLocaleDateString()}

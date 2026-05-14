@@ -26,7 +26,7 @@ const ToastContainer = memo(function ToastContainer() {
           next.delete(id);
           return next;
         });
-      }, 400); // tempo do fade-out
+      }, 400);
     },
     [dispatch],
   );
