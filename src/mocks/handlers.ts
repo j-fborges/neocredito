@@ -9,7 +9,7 @@ import {
   type SigningProposal,
 } from "../types/signingProposal";
 
-const daysAgo = (days: number, hour = 0, minute = 0) => {
+export const daysAgo = (days: number, hour = 0, minute = 0) => {
   const d = new Date();
   d.setDate(d.getDate() - days);
   d.setHours(hour, minute, 0, 0);
@@ -25,7 +25,11 @@ const dossiers: Dossier[] = [
       signatureDate: daysAgo(5, 10, 30),
       ip: "192.168.1.10",
       coordinates: { lat: -23.5505, lon: -46.6333 },
-      address: "Av. Paulista, 1000 - São Paulo, SP",
+      address: "Av. Paulista, 1000",
+      neighborhood: "Bela Vista",
+      zipCode: "01310-100",
+      city: "São Paulo",
+      country: "Brasil",
     },
     selfieUrl: "https://via.placeholder.com/300x400",
     documentUrl: "https://via.placeholder.com/400x300",
@@ -40,7 +44,11 @@ const dossiers: Dossier[] = [
       signatureDate: daysAgo(3, 8, 0),
       ip: "10.0.0.5",
       coordinates: { lat: -22.9068, lon: -43.1729 },
-      address: "Rua do Ouvidor, 50 - Rio de Janeiro, RJ",
+      address: "Rua do Ouvidor, 50",
+      neighborhood: "Centro",
+      zipCode: "20040-030",
+      city: "Rio de Janeiro",
+      country: "Brasil",
     },
     selfieUrl: "https://via.placeholder.com/300x400",
     documentUrl: "https://via.placeholder.com/400x300",
@@ -55,7 +63,11 @@ const dossiers: Dossier[] = [
       signatureDate: daysAgo(15, 18, 0),
       ip: "172.16.0.1",
       coordinates: { lat: -19.9167, lon: -43.9345 },
-      address: "Av. Afonso Pena, 300 - Belo Horizonte, MG",
+      address: "Av. Afonso Pena, 300",
+      neighborhood: "Centro",
+      zipCode: "30130-000",
+      city: "Belo Horizonte",
+      country: "Brasil",
     },
     selfieUrl: "https://via.placeholder.com/300x400",
     documentUrl: "https://via.placeholder.com/400x300",

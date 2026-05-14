@@ -18,6 +18,10 @@ export interface SignatoryData {
   ip: string;
   coordinates: Coordinates;
   address: string;
+  neighborhood: string;
+  zipCode: string;
+  city: string;
+  country: string;
 }
 
 export interface Dossier {

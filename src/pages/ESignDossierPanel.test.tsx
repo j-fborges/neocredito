@@ -18,7 +18,11 @@ const mockDossier: Dossier = {
     signatureDate: "2025-05-10T10:30:00Z",
     ip: "192.168.1.10",
     coordinates: { lat: -23.5505, lon: -46.6333 },
-    address: "Av. Paulista, 1000 - São Paulo, SP",
+    address: "Av. Paulista, 1000",
+    neighborhood: "Bela Vista",
+    zipCode: "01310-100",
+    city: "São Paulo",
+    country: "Brasil",
   },
   selfieUrl: "https://via.placeholder.com/300x400",
   documentUrl: "https://via.placeholder.com/400x300",
@@ -44,19 +48,43 @@ describe("ESignDossierPanel", () => {
       </Provider>,
     );
 
-    // Título
+    // Título principal
     expect(
       await screen.findByText("Dossiê de E-Assinatura"),
     ).toBeInTheDocument();
-    // Número da proposta
+
+    // Número da proposta e status
     expect(screen.getByText(/Nº Proposta: 101/)).toBeInTheDocument();
-    // Status
     expect(screen.getByText("Pendente")).toBeInTheDocument();
+
     // Dados do assinante
     expect(screen.getByText(/João Silva/)).toBeInTheDocument();
     expect(screen.getByText(/123.456.789-00/)).toBeInTheDocument();
-    // Formato de data – flexível para fuso horário
     expect(screen.getByText(/10\/05\/2025/)).toBeInTheDocument();
+    expect(screen.getByText(/192.168.1.10/)).toBeInTheDocument();
+
+    // Endereço aparece em dois lugares
+    const addressElements = screen.getAllByText(/Av\. Paulista, 1000/);
+    expect(addressElements.length).toBeGreaterThanOrEqual(2);
+
+    // Seção de localização
+    expect(screen.getByText("Localização geográfica:")).toBeInTheDocument();
+    expect(screen.getByText(/Bela Vista/)).toBeInTheDocument();
+    expect(screen.getByText(/01310-100/)).toBeInTheDocument();
+    expect(screen.getByText(/São Paulo/)).toBeInTheDocument();
+    expect(screen.getByText(/Brasil/)).toBeInTheDocument();
+    expect(
+      screen.getByText("Local aproximado da assinatura"),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/-23.5505, -46.6333/)).toBeInTheDocument();
+
+    // Mapa: como o Leaflet não funciona em jsdom, o fallback estático é exibido
+    // Verificamos a presença da imagem do tile do OpenStreetMap
+    const mapImage = screen.getByAltText(
+      "Mapa da localização -23.5505, -46.6333",
+    );
+    expect(mapImage).toBeInTheDocument();
+    expect(mapImage.tagName).toBe("IMG");
   });
 
   it("shows loading state", () => {

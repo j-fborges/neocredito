@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import DossierStatusBadge from "../components/eSignDossier/DossierStatusBadge";
+import MapSection from "../components/eSignDossier/MapSection";
 import { messages } from "../i18n/pt-BR";
 import {
   fetchDossier,
@@ -43,7 +44,6 @@ export default function ESignDossierPanel() {
         {messages.dossier.title}
       </h1>
 
-      {/* Cabeçalho da proposta */}
       <div className="flex flex-col mb-4 sm:pt-2 gap border-l-4 border-brand-blue-dark pl-2 ml-1">
         <span className="text-lg font-bold font-mono uppercase">
           {messages.dossier.proposalNumber}: {dossier.proposalId}
@@ -56,10 +56,8 @@ export default function ESignDossierPanel() {
         </span>
       </div>
 
-      {/* Separador azul sutil */}
       <hr className="border-brand-blue-dark/20 my-4" />
 
-      {/* Dados do assinante */}
       <h2 className="leading-6 text-xl mb-4 font-sans text-brand-blue-dark">
         {messages.dossier.signatoryData}
       </h2>
@@ -85,11 +83,14 @@ export default function ESignDossierPanel() {
 
       <hr className="border-brand-blue-dark/20 my-4" />
 
-      {/* Placeholder para seções futuras */}
       <p>
         <strong>{messages.dossier.facialSimilarity}:</strong>{" "}
         {dossier.facialSimilarity}%
       </p>
+
+      <hr className="border-brand-blue-dark/20 my-4" />
+
+      <MapSection signatory={dossier.signatory} />
     </main>
   );
 }

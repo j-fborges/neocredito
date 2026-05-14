@@ -147,3 +147,9 @@ Estruturação da tipagem para os *Dossiês de Assinatura*, **endpoints e handle
 Primeira iteração dinâmica do *Painel de Validação do Dossiê de Assinatura*, disposição das primeiras informações, gerenciamento de estado básico com cobertura condicional para `loading` e `error` a partir de requisição através do **Thunk do Slice de Dossiês** estruturado no commit anterior. Configuração de rota `react-router` integrada ao endpoint do *MWS* aceitando `URL Query Params` (no caso o *Nº da Proposta/Dossiê* - `id`). Testagem básica de `ESignDossierPanel.tsx`.
 
 Adicionado `npm run build` ao `pre-commit` do **Husky**.
+
+### 2.19. 27º Commit
+
+Criação dos componentes de mapas para os dados de *Localização Geográfica da Assinatura* a partir do isolamento de responsabilidades em `MapSection.tsx`. Apresenta um mapa dinâmico(`DynamicMap`) utilizando o pacote `leaflet` e um mapa estático de fallback(`StaticMapFallback`) a partir da API do *https://www.openstreetmap.org/* .
+
+OBS: Para o tratamento de erro em `MapSection.tsx` foi criado `MapErrorBoundary.tsx` utilizando a estrutura `Class Component` que o **React** fornece como opção para viabilizar a interceptação erros lançados durante a renderização. (e evitar que a aplicação quebre)
