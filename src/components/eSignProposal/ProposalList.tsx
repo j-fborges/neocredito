@@ -1,3 +1,4 @@
+import { messages } from "../../i18n/pt-BR";
 import type { SigningProposal } from "../../types/signingProposal";
 
 import ProposalRow from "./ProposalRow";
@@ -8,14 +9,16 @@ interface ProposalListProps {
 }
 
 export default function ProposalList({ itens, onRowClick }: ProposalListProps) {
+  const { table } = messages.proposal;
+
   return (
     <table className="w-full border-collapse">
       <thead>
         <tr className="bg-gray-100">
-          <th className="p-2 text-left">ID</th>
-          <th className="p-2 text-left">Cliente</th>
-          <th className="p-2 text-left">Status</th>
-          <th className="p-2 text-left">Último Evento</th>
+          <th className="p-2 text-left">{table.headerId}</th>
+          <th className="p-2 text-left">{table.headerCustomer}</th>
+          <th className="p-2 text-left">{table.headerStatus}</th>
+          <th className="p-2 text-left">{table.headerLastEvent}</th>
         </tr>
       </thead>
       <tbody>

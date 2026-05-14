@@ -1,3 +1,4 @@
+import { messages } from "../../i18n/pt-BR";
 import type { SigningProposal } from "../../types/signingProposal";
 
 import ProposalList from "./ProposalList";
@@ -18,7 +19,7 @@ export default function ProposalContent({
   if (loading) {
     return (
       <div role="status" aria-live="polite" className="py-4">
-        <p>Carregando propostas...</p>
+        <p>{messages.proposal.loading}</p>
       </div>
     );
   }
@@ -26,7 +27,9 @@ export default function ProposalContent({
   if (error) {
     return (
       <div role="alert" className="py-4 text-red-500">
-        <p>Erro ao carregar: {error}</p>
+        <p>
+          {messages.error.loading}: {error}
+        </p>
       </div>
     );
   }
@@ -34,7 +37,7 @@ export default function ProposalContent({
   if (itens.length === 0) {
     return (
       <section
-        aria-label="Nenhuma proposta encontrada"
+        aria-label={messages.proposal.empty.title}
         className="py-16 text-center"
       >
         <svg
@@ -51,10 +54,10 @@ export default function ProposalContent({
           />
         </svg>
         <h3 className="mt-2 text-sm font-semibold text-gray-900">
-          Nenhuma proposta encontrada
+          {messages.proposal.empty.title}
         </h3>
         <p className="mt-1 text-sm text-gray-500">
-          Tente ajustar os filtros ou o termo de busca.
+          {messages.proposal.empty.description}
         </p>
       </section>
     );

@@ -1,3 +1,4 @@
+import { messages } from "../../i18n/pt-BR";
 import type { ContactAttempt as ContactAttemptType } from "../../types/signingProposal";
 
 import ContactAttempt from "./ContactAttempt";
@@ -11,7 +12,9 @@ export default function ContactAttemptList({
 }: ContactAttemptListProps) {
   if (attempts.length === 0) {
     return (
-      <p className="text-sm text-gray-500">Nenhuma tentativa registrada.</p>
+      <p className="text-sm text-gray-500">
+        {messages.proposal.modal.noAttempts}
+      </p>
     );
   }
 

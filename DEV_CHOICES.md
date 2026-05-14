@@ -40,7 +40,6 @@ Seguindo o pressuposto de não adicionar itens não avaliados:
 - Não haverá deploy. Por isso não haverão rotinas de CD apesar de rotinas CI estarem presentes.
 - Não adicionarei taxa mínima de cobertura de testes nem para Husky nem para CI.
 - Por não haver deploy também não haverão branches além da Main.
-- Não adicionarei internacionalização (i18n) ou estilização complexa, pois não faz sentido.
 - Sem persistencia de dados.
 
 ---
@@ -112,3 +111,7 @@ Testagem unitária de componentes a partir do `./src/pages/CorbanPannel.tsx`.
 ### 2.11. 17º Commit
 
 Adicionado Modal de Detalhes das Propostas de Assinatura, com informações sobre os clientes, datas, link de assinatura e lista de tentativas de contato. Refatoração de `FilterBar.tsx` e desacoplamento (componentização) de `StatusFilterSelect.tsx`.
+
+### 2.12. 18º Commit
+
+Refatoramento de todos os componentes do front-end aplicando HTML semântico e estrutura de internacionalização (apenas para Português BR) para melhor estruturação e controle textual por tokens.

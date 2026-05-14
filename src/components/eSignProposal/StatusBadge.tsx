@@ -1,3 +1,4 @@
+import { messages } from "../../i18n/pt-BR";
 import { ESIGN_STATUS, type ESignStatus } from "../../types/signingProposal";
 
 const colorMap: Record<ESignStatus, string> = {
@@ -12,7 +13,7 @@ export default function StatusBadge({ status }: { status: ESignStatus }) {
     <span
       className={`inline-block px-2 py-1 rounded text-sm font-medium ${colorMap[status]}`}
     >
-      {status}
+      {messages.status[status]}
     </span>
   );
 }

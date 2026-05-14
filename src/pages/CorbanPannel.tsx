@@ -4,6 +4,7 @@ import DetailsModal from "../components/eSignProposal/DetailsModal";
 import FilterBar from "../components/eSignProposal/FilterBar";
 import ProposalContent from "../components/eSignProposal/ProposalContent";
 import { useDebounce } from "../hooks/useDebounce";
+import { messages } from "../i18n/pt-BR";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import {
   clearSelection,
@@ -38,15 +39,12 @@ export default function CorbanPannel() {
   const handleStatusChange = (status: ESignStatus | null) => {
     dispatch(setStatusFilter(status));
   };
-
   const handleInputChange = (value: string) => {
     setInputValue(value);
   };
-
   const handleRowClick = (proposal: SigningProposal) => {
     dispatch(setSelection(proposal));
   };
-
   const handleCloseModal = () => {
     dispatch(clearSelection());
   };
@@ -60,10 +58,10 @@ export default function CorbanPannel() {
         id="corban-heading"
         className="text-2xl font-bold mb-4 font-mono uppercase text-brand-blue-dark"
       >
-        Painel de Acompanhamento do CORBAN
+        {messages.proposal.title}
       </h1>
       <h2 className="text-xl mb-4 font-sans text-brand-blue-dark">
-        Assinaturas Eletrônicas de Propostas em Operação:
+        {messages.proposal.subtitle}
       </h2>
 
       <FilterBar
@@ -84,7 +82,6 @@ export default function CorbanPannel() {
         <DetailsModal
           proposal={selectedProposal}
           loading={detailLoading}
-          error={error}
           onClose={handleCloseModal}
         />
       )}
