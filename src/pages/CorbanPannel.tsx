@@ -1,53 +1,24 @@
-import { useEffect, useState } from "react";
-
 import DetailsModal from "../components/eSignProposal/DetailsModal";
 import FilterBar from "../components/eSignProposal/FilterBar";
 import ProposalContent from "../components/eSignProposal/ProposalContent";
-import { useDebounce } from "../hooks/useDebounce";
+import { useProposalDetail } from "../hooks/useProposalDetail";
+import { useProposalNotifications } from "../hooks/useProposalNotifications";
+import { useProposalPolling } from "../hooks/useProposalPolling";
+import { useProposalSearch } from "../hooks/useProposalSearch";
 import { messages } from "../i18n/pt-BR";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import {
-  clearSelection,
-  fetchSigningProposals,
-  selectProposals,
-  setSelection,
-  setStatusFilter,
-} from "../store/SigningProposalSlice";
-import type { ESignStatus, SigningProposal } from "../types/signingProposal";
+import { useAppSelector } from "../store/hooks";
+import { selectProposals } from "../store/SigningProposalSlice";
 
 export default function CorbanPannel() {
-  const dispatch = useAppDispatch();
-  const {
-    itens,
-    statusFilter,
-    searchTerm,
-    loading,
-    error,
-    selectedProposal,
-    detailLoading,
-  } = useAppSelector(selectProposals);
+  const { itens, loading, error, selectedProposal, detailLoading } =
+    useAppSelector(selectProposals);
 
-  const [inputValue, setInputValue] = useState(searchTerm);
-  const debouncedSearch = useDebounce(inputValue, 300);
+  const { statusFilter, inputValue, handleStatusChange, handleInputChange } =
+    useProposalSearch();
 
-  useEffect(() => {
-    dispatch(
-      fetchSigningProposals({ status: statusFilter, search: debouncedSearch }),
-    );
-  }, [dispatch, statusFilter, debouncedSearch]);
-
-  const handleStatusChange = (status: ESignStatus | null) => {
-    dispatch(setStatusFilter(status));
-  };
-  const handleInputChange = (value: string) => {
-    setInputValue(value);
-  };
-  const handleRowClick = (proposal: SigningProposal) => {
-    dispatch(setSelection(proposal));
-  };
-  const handleCloseModal = () => {
-    dispatch(clearSelection());
-  };
+  useProposalPolling();
+  useProposalNotifications(itens);
+  const { handleRowClick, handleCloseModal } = useProposalDetail();
 
   return (
     <main

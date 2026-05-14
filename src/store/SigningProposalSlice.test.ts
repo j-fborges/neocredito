@@ -8,14 +8,18 @@ import type { SigningProposal } from "../types/signingProposal";
 import reducer, {
   clearSelection,
   fetchSigningProposals,
+  notifyProposal,
   selectProposals,
   setSearchTerm,
   setSelection,
   setStatusFilter,
 } from "./SigningProposalSlice";
+import uiReducer from "./UiSlice";
 
 function createTestStore() {
-  return configureStore({ reducer: { signingProposals: reducer } });
+  return configureStore({
+    reducer: { signingProposals: reducer, ui: uiReducer },
+  });
 }
 
 describe("SigningProposalSlice", () => {
@@ -57,6 +61,7 @@ describe("SigningProposalSlice", () => {
         status: "AWAITING",
         lastSigningEvent: new Date().toISOString(),
         notified: false,
+        notifiable: true,
         customer: { fullName: "Test", cpf: "000" },
         details: { eSignLink: "", sentDate: "", contactAttempts: [] },
       };
@@ -66,13 +71,14 @@ describe("SigningProposalSlice", () => {
       expect(state.selectedProposal).toEqual(mockProposal);
     });
 
-    it("clearSelection should remove the proposal and clear detailError", () => {
+    it("clearSelection should remove the proposal and clear error", () => {
       const store = createTestStore();
       store.dispatch(
         setSelection({
           id: "1",
           status: "SIGNED",
           lastSigningEvent: "",
+          notifiable: true,
           notified: false,
           customer: { fullName: "A", cpf: "1" },
           details: { eSignLink: "", sentDate: "", contactAttempts: [] },
@@ -148,6 +154,53 @@ describe("SigningProposalSlice", () => {
       expect(state.loading).toBe(false);
       expect(state.error).toBeDefined();
       expect(state.itens).toEqual([]);
+    });
+  });
+
+  describe("thunk notifyProposal", () => {
+    it("should update the notified field of a proposal", async () => {
+      const mockProposal: SigningProposal = {
+        id: "707",
+        status: "SIGNED",
+        notified: false,
+        notifiable: true,
+        customer: { fullName: "Test", cpf: "111" },
+        lastSigningEvent: "",
+        details: { eSignLink: "", sentDate: "", contactAttempts: [] },
+      };
+
+      server.use(
+        http.get("/api/proposals", () =>
+          HttpResponse.json({ data: [mockProposal] }),
+        ),
+        http.patch("/api/proposals/707/notify", () =>
+          HttpResponse.json({ data: { ...mockProposal, notified: true } }),
+        ),
+      );
+
+      const store = createTestStore();
+
+      await store.dispatch(fetchSigningProposals());
+      expect(store.getState().signingProposals.itens[0].notified).toBe(false);
+
+      await store.dispatch(notifyProposal("707"));
+
+      const state = store.getState().signingProposals;
+      expect(state.itens[0].notified).toBe(true);
+    });
+
+    it("should handle errors gracefully", async () => {
+      server.use(
+        http.patch("/api/proposals/707/notify", () =>
+          HttpResponse.json({ message: "Erro" }, { status: 500 }),
+        ),
+      );
+
+      const store = createTestStore();
+      await store.dispatch(notifyProposal("707"));
+
+      const state = store.getState().signingProposals;
+      expect(state.error).toBeDefined();
     });
   });
 });

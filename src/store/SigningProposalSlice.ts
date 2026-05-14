@@ -53,6 +53,16 @@ export const fetchSigningProposals = createAsyncThunk<
   return data.data;
 });
 
+export const notifyProposal = createAsyncThunk<SigningProposal, string>(
+  "propostas/notify",
+  async (id) => {
+    const res = await fetch(`/api/proposals/${id}/notify`, { method: "PATCH" });
+    if (!res.ok) throw new Error(`Erro ${res.status}`);
+    const data: ApiResponse<SigningProposal> = await res.json();
+    return data.data;
+  },
+);
+
 const SigningProposalSlice = createSlice({
   name: "SigningProposals",
   initialState,
@@ -83,6 +93,26 @@ const SigningProposalSlice = createSlice({
       .addCase(fetchSigningProposals.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message ?? "Error loading proposals";
+      })
+      .addCase(notifyProposal.pending, (state) => {
+        state.detailLoading = true;
+        state.error = null;
+      })
+      .addCase(notifyProposal.fulfilled, (state, action) => {
+        state.detailLoading = false;
+
+        const index = state.itens.findIndex((p) => p.id === action.payload.id);
+        if (index !== -1) {
+          state.itens[index] = action.payload;
+        }
+
+        if (state.selectedProposal?.id === action.payload.id) {
+          state.selectedProposal = action.payload;
+        }
+      })
+      .addCase(notifyProposal.rejected, (state, action) => {
+        state.detailLoading = false;
+        state.error = action.error.message ?? "Erro ao marcar notificação";
       });
   },
 });

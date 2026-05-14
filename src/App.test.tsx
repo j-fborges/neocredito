@@ -1,9 +1,11 @@
 import { render, screen } from "@testing-library/react";
+import { http, HttpResponse } from "msw";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 
 import App from "./App";
+import { server } from "./mocks/server";
 import { store } from "./store";
 
 describe("App", () => {
@@ -59,5 +61,38 @@ describe("App", () => {
     );
 
     expect(screen.getByText("Página não encontrada")).toBeInTheDocument();
+  });
+
+  it("shows a toast for new unread signed proposals", async () => {
+    server.use(
+      http.get("/api/proposals", () =>
+        HttpResponse.json({
+          data: [
+            {
+              id: "707",
+              customer: { fullName: "Fernando Alves", cpf: "555.666.777-88" },
+              status: "SIGNED",
+              lastSigningEvent: "2025-05-13T04:00:00Z",
+              notified: false,
+              notifiable: true,
+              details: { eSignLink: "", sentDate: "", contactAttempts: [] },
+            },
+          ],
+        }),
+      ),
+    );
+
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/us-01"]}>
+          <App />
+        </MemoryRouter>
+      </Provider>,
+    );
+
+    const toasts = await screen.findAllByText(
+      /Nova assinatura: Fernando Alves/,
+    );
+    expect(toasts.length).toBeGreaterThan(0);
   });
 });

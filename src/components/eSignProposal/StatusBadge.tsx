@@ -8,10 +8,20 @@ const colorMap: Record<ESignStatus, string> = {
   [ESIGN_STATUS.EXPIRED]: "bg-gray-200 text-gray-800",
 };
 
-export default function StatusBadge({ status }: { status: ESignStatus }) {
+interface StatusBadgeProps {
+  status: ESignStatus;
+  pulse?: boolean;
+}
+
+export default function StatusBadge({
+  status,
+  pulse = false,
+}: StatusBadgeProps) {
   return (
     <span
-      className={`inline-block px-2 py-1 rounded text-sm font-medium ${colorMap[status]}`}
+      className={`inline-block px-2 py-1 rounded text-sm font-medium ${colorMap[status]} ${
+        pulse ? "animate-pulse" : ""
+      }`}
     >
       {messages.status[status]}
     </span>

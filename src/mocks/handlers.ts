@@ -3,7 +3,6 @@ import { http, HttpResponse } from "msw";
 import {
   CONTACT_ATTEMPT_MEDIUM,
   ESIGN_STATUS,
-  type ApiResponse,
   type ESignStatus,
   type SigningProposal,
 } from "../types/signingProposal";
@@ -15,13 +14,14 @@ const daysAgo = (days: number, hour = 0, minute = 0) => {
   return d.toISOString();
 };
 
-const proposals: SigningProposal[] = [
+const initialProposals: SigningProposal[] = [
   {
     id: "101",
     customer: { fullName: "João Silva", cpf: "123.456.789-00" },
     status: ESIGN_STATUS.SIGNED,
     lastSigningEvent: daysAgo(5, 10, 30),
     notified: true,
+    notifiable: true,
     details: {
       eSignLink: "https://assinatura.neo.com/assinar/abc101",
       sentDate: daysAgo(10, 9, 0),
@@ -34,7 +34,7 @@ const proposals: SigningProposal[] = [
         {
           date: daysAgo(6, 11, 15),
           medium: CONTACT_ATTEMPT_MEDIUM.WHATSAPP,
-          observation: "Contato via WHATSAPP",
+          observation: "Contato via WhatsApp",
         },
       ],
     },
@@ -45,6 +45,7 @@ const proposals: SigningProposal[] = [
     status: ESIGN_STATUS.AWAITING,
     lastSigningEvent: daysAgo(2),
     notified: false,
+    notifiable: false,
     details: {
       eSignLink: "https://assinatura.neo.com/assinar/def202",
       sentDate: daysAgo(2),
@@ -56,7 +57,8 @@ const proposals: SigningProposal[] = [
     customer: { fullName: "Carlos Pereira", cpf: "111.222.333-44" },
     status: ESIGN_STATUS.REJECTED,
     lastSigningEvent: daysAgo(12, 16, 45),
-    notified: true,
+    notified: false,
+    notifiable: false,
     details: {
       eSignLink: "https://assinatura.neo.com/assinar/ghi303",
       sentDate: daysAgo(20, 8, 0),
@@ -79,7 +81,8 @@ const proposals: SigningProposal[] = [
     customer: { fullName: "Ana Oliveira", cpf: "222.333.444-55" },
     status: ESIGN_STATUS.SIGNED,
     lastSigningEvent: daysAgo(3, 8, 0),
-    notified: false,
+    notified: true,
+    notifiable: true,
     details: {
       eSignLink: "https://assinatura.neo.com/assinar/jkl404",
       sentDate: daysAgo(4, 11, 0),
@@ -97,7 +100,8 @@ const proposals: SigningProposal[] = [
     customer: { fullName: "Roberto Lima", cpf: "333.444.555-66" },
     status: ESIGN_STATUS.EXPIRED,
     lastSigningEvent: daysAgo(45, 0, 0),
-    notified: true,
+    notified: false,
+    notifiable: false,
     details: {
       eSignLink: "https://assinatura.neo.com/assinar/mno505",
       sentDate: daysAgo(50, 10, 0),
@@ -120,7 +124,8 @@ const proposals: SigningProposal[] = [
     customer: { fullName: "Juliana Costa", cpf: "444.555.666-77" },
     status: ESIGN_STATUS.AWAITING,
     lastSigningEvent: daysAgo(1, 12, 0),
-    notified: true,
+    notified: false,
+    notifiable: true,
     details: {
       eSignLink: "https://assinatura.neo.com/assinar/pqr606",
       sentDate: daysAgo(1, 10, 0),
@@ -139,6 +144,7 @@ const proposals: SigningProposal[] = [
     status: ESIGN_STATUS.SIGNED,
     lastSigningEvent: daysAgo(15, 18, 0),
     notified: false,
+    notifiable: true,
     details: {
       eSignLink: "https://assinatura.neo.com/assinar/stu707",
       sentDate: daysAgo(18, 7, 0),
@@ -161,7 +167,8 @@ const proposals: SigningProposal[] = [
     customer: { fullName: "Patrícia Santos", cpf: "666.777.888-99" },
     status: ESIGN_STATUS.REJECTED,
     lastSigningEvent: daysAgo(30, 9, 0),
-    notified: true,
+    notified: false,
+    notifiable: false,
     details: {
       eSignLink: "https://assinatura.neo.com/assinar/vwx808",
       sentDate: daysAgo(35, 8, 0),
@@ -185,6 +192,7 @@ const proposals: SigningProposal[] = [
     status: ESIGN_STATUS.AWAITING,
     lastSigningEvent: daysAgo(7, 14, 0),
     notified: false,
+    notifiable: true,
     details: {
       eSignLink: "https://assinatura.neo.com/assinar/yza909",
       sentDate: daysAgo(7, 9, 0),
@@ -196,7 +204,8 @@ const proposals: SigningProposal[] = [
     customer: { fullName: "Beatriz Rocha", cpf: "888.999.000-11" },
     status: ESIGN_STATUS.EXPIRED,
     lastSigningEvent: daysAgo(55, 10, 0),
-    notified: true,
+    notified: false,
+    notifiable: false,
     details: {
       eSignLink: "https://assinatura.neo.com/assinar/bcd1010",
       sentDate: daysAgo(60, 8, 30),
@@ -220,6 +229,7 @@ const proposals: SigningProposal[] = [
     status: ESIGN_STATUS.SIGNED,
     lastSigningEvent: daysAgo(25, 17, 30),
     notified: false,
+    notifiable: true,
     details: {
       eSignLink: "https://assinatura.neo.com/assinar/efg1112",
       sentDate: daysAgo(28, 9, 0),
@@ -237,7 +247,8 @@ const proposals: SigningProposal[] = [
     customer: { fullName: "Camila Ferreira", cpf: "000.111.222-33" },
     status: ESIGN_STATUS.REJECTED,
     lastSigningEvent: daysAgo(8, 11, 45),
-    notified: true,
+    notified: false,
+    notifiable: false,
     details: {
       eSignLink: "https://assinatura.neo.com/assinar/hij1213",
       sentDate: daysAgo(10, 8, 0),
@@ -260,7 +271,8 @@ const proposals: SigningProposal[] = [
     customer: { fullName: "Rafael Barbosa", cpf: "111.222.333-44" },
     status: ESIGN_STATUS.AWAITING,
     lastSigningEvent: daysAgo(3, 16, 0),
-    notified: true,
+    notified: false,
+    notifiable: true,
     details: {
       eSignLink: "https://assinatura.neo.com/assinar/klm1314",
       sentDate: daysAgo(3, 10, 0),
@@ -280,8 +292,29 @@ const proposals: SigningProposal[] = [
   },
 ];
 
+let proposals: SigningProposal[] = JSON.parse(JSON.stringify(initialProposals));
+
+export function resetProposals() {
+  proposals = JSON.parse(JSON.stringify(initialProposals));
+}
+
+if (typeof window !== "undefined") {
+  setInterval(() => {
+    const awaitingNotifiable = proposals.filter(
+      (p) => p.notifiable && p.status === ESIGN_STATUS.AWAITING,
+    );
+    if (awaitingNotifiable.length === 0) return;
+
+    const randomIndex = Math.floor(Math.random() * awaitingNotifiable.length);
+    const proposal = awaitingNotifiable[randomIndex];
+
+    proposal.status = ESIGN_STATUS.SIGNED;
+    proposal.lastSigningEvent = new Date().toISOString();
+    proposal.notified = false;
+  }, 15_000);
+}
+
 export const handlers = [
-  // GET /api/proposals
   http.get("/api/proposals", ({ request }) => {
     const url = new URL(request.url);
     const statusFilter = url.searchParams.get("status") as ESignStatus | null;
@@ -300,18 +333,23 @@ export const handlers = [
       );
     }
 
-    const response: ApiResponse<SigningProposal[]> = { data: result };
-    return HttpResponse.json(response);
+    return HttpResponse.json({ data: result });
   }),
 
-  // GET /api/proposals/:id
   http.get("/api/proposals/:id", ({ params }) => {
-    const { id } = params;
-    const proposal = proposals.find((p) => p.id === id);
+    const proposal = proposals.find((p) => p.id === params.id);
     if (!proposal) {
       return new HttpResponse(null, { status: 404 });
     }
-    const response: ApiResponse<SigningProposal> = { data: proposal };
-    return HttpResponse.json(response);
+    return HttpResponse.json({ data: proposal });
+  }),
+
+  http.patch("/api/proposals/:id/notify", ({ params }) => {
+    const proposal = proposals.find((p) => p.id === params.id);
+    if (!proposal) {
+      return new HttpResponse(null, { status: 404 });
+    }
+    proposal.notified = true;
+    return HttpResponse.json({ data: proposal });
   }),
 ];

@@ -8,24 +8,30 @@ interface ProposalRowProps {
 }
 
 export default function ProposalRow({ proposal, onClick }: ProposalRowProps) {
+  const { id, customer, status, lastSigningEvent, notifiable, notified } =
+    proposal;
+
+  // Exibe o indicador de novo apenas para propostas notificáveis, assinadas e não lidas
+  const isNew = notifiable && status === "SIGNED" && !notified;
+
   return (
     <tr
-      className="border-t hover:bg-gray-50 cursor-pointer"
+      className="border-t hover:bg-gray-50 cursor-pointer transition-colors"
       onClick={() => onClick(proposal)}
     >
-      <td className="p-2">{proposal.id}</td>
+      <td className="p-2">{id}</td>
       <td className="p-2">
-        {proposal.customer.fullName}
-        {proposal.notified && (
-          <span className="ml-2 inline-block w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+        {customer.fullName}
+        {isNew && (
+          <span className="ml-2 inline-flex items-center text-green-600 animate-pulse">
+            ✔️
+          </span>
         )}
       </td>
       <td className="p-2">
-        <StatusBadge status={proposal.status} />
+        <StatusBadge status={status} pulse={isNew} />
       </td>
-      <td className="p-2">
-        {new Date(proposal.lastSigningEvent).toLocaleDateString()}
-      </td>
+      <td className="p-2">{new Date(lastSigningEvent).toLocaleDateString()}</td>
     </tr>
   );
 }

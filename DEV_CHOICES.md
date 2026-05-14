@@ -115,3 +115,9 @@ Adicionado Modal de Detalhes das Propostas de Assinatura, com informações sobr
 ### 2.12. 18º Commit
 
 Refatoramento de todos os componentes do front-end aplicando HTML semântico e estrutura de internacionalização (apenas para Português BR) para melhor estruturação e controle textual por tokens.
+
+### 2.12. 19º Commit
+
+Criação do **sistema de notificação** das `Propostas de Assinatura` do *Painel de Acompanhamento do CORBAN*. Implementando mensagens *Toasts* a partir do `ToastContainer` , novo Slice do Redux para controle do estado da interface `UiSlice.ts` e novas chamadas da API mockada para sinalizar as notificações vistas.
+
+Implementação de *Polling* para atualizar a lista de Assinaturas em intervalos de tempo. Refatoração do `CorbanPannel.ts` para desacoplar responsabilidades de controle de estados e passa-los para os Hooks `useProposalDetail.ts` , `useProposalNotifications.ts`, `useProposalPolling.ts` e `useProposalSearch.ts`. Testagem das novas implementações.

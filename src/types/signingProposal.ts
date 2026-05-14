@@ -28,6 +28,7 @@ export interface SigningProposal {
   status: ESignStatus;
   lastSigningEvent: string;
   notified: boolean;
+  notifiable: boolean;
   customer: Customer;
   details: ProposalDetails;
 }

@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { describe, expect, it, afterEach } from "vitest";
+import { describe, expect, it, afterEach, vi } from "vitest";
 
 import { server } from "../mocks/server";
 import { store } from "../store";
@@ -18,6 +18,7 @@ const mockProposals: SigningProposal[] = [
     status: "SIGNED",
     lastSigningEvent: "2025-05-10T10:30:00Z",
     notified: true,
+    notifiable: true,
     details: {
       eSignLink: "https://link.exemplo",
       sentDate: "2025-05-09T09:00:00Z",
@@ -30,9 +31,23 @@ const mockProposals: SigningProposal[] = [
     status: "AWAITING",
     lastSigningEvent: "2025-05-08T08:00:00Z",
     notified: false,
+    notifiable: false,
     details: {
       eSignLink: "https://link.exemplo",
       sentDate: "2025-05-08T08:00:00Z",
+      contactAttempts: [],
+    },
+  },
+  {
+    id: "707",
+    customer: { fullName: "Fernando Alves", cpf: "555.666.777-88" },
+    status: "SIGNED",
+    lastSigningEvent: "2025-05-15T18:00:00Z",
+    notified: false,
+    notifiable: true,
+    details: {
+      eSignLink: "https://link.exemplo",
+      sentDate: "2025-05-13T07:00:00Z",
       contactAttempts: [],
     },
   },
@@ -82,7 +97,7 @@ describe("CorbanPannel", () => {
     expect(screen.getByRole("status")).toBeInTheDocument();
 
     const rows = await screen.findAllByRole("row");
-    expect(rows).toHaveLength(3);
+    expect(rows).toHaveLength(4);
 
     expect(screen.getByText("João Silva")).toBeInTheDocument();
     expect(screen.getByText("Maria Souza")).toBeInTheDocument();
@@ -131,7 +146,7 @@ describe("CorbanPannel", () => {
       http.get("/api/proposals", ({ request }) => {
         const url = new URL(request.url);
         const status = url.searchParams.get("status");
-        const search = url.searchParams.get("q")?.toLowerCase(); // ← adicionar .toLowerCase()
+        const search = url.searchParams.get("q")?.toLowerCase();
         let filtered = mockProposals;
         if (status) {
           filtered = filtered.filter((p) => p.status === status);
@@ -200,5 +215,38 @@ describe("CorbanPannel", () => {
 
     await userEvent.click(screen.getByLabelText("Fechar modal"));
     expect(screen.queryByText("123.456.789-00")).not.toBeInTheDocument();
+  });
+
+  it("dispatches notifyProposal when clicking a notifiable unread row", async () => {
+    const patchHandler = vi.fn();
+    server.use(
+      http.get("/api/proposals", () =>
+        HttpResponse.json({ data: mockProposals }),
+      ),
+      http.patch("/api/proposals/:id/notify", ({ params }) => {
+        patchHandler(params.id);
+        const updated = {
+          ...mockProposals.find((p) => p.id === params.id)!,
+          notified: true,
+        };
+        return HttpResponse.json({ data: updated });
+      }),
+    );
+
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/us-01"]}>
+          <CorbanPannel />
+        </MemoryRouter>
+      </Provider>,
+    );
+
+    const rows = await screen.findAllByRole("row");
+    const fernandoRow = rows[3];
+    await userEvent.click(fernandoRow);
+
+    expect(patchHandler).toHaveBeenCalledWith("707");
+
+    expect(await screen.findByText("555.666.777-88")).toBeInTheDocument();
   });
 });

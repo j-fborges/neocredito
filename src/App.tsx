@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 
 import Header from "./components/Header";
+import ToastContainer from "./components/ToastContainer";
 import CorbanPannel from "./pages/CorbanPannel";
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
 
         <Route path="*" element={<p>Página não encontrada</p>} />
       </Routes>
+      <ToastContainer />
     </>
   );
 }
