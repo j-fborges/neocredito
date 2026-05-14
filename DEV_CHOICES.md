@@ -133,3 +133,7 @@ Estilização e refatoração do código para consistencia visual e principalmen
 ### 2.16. 22º Commit
 
 Últimos ajustes da `US-01`. Refatoração do *Modal de Detalhes da Proposta*, criação do `ProposalDetailsPanel.tsx` para melhor visualização e usabilidade em desktop e telas maiores. Refatoração nas *actions* `.fulfilled` de chamadas da API mockada pela *Slice de Propostas*, assim como no hook `useProposalDetails.ts` e handlers do *MWS* para resolver a atualização de badges e notificações nos modais.
+
+### 2.17. 23º Commit
+
+Criação da rota `/us-02` e botão de navegação entre *User Stories*, Criação de `ESignDossierPanel.tsx` para implantação do Painel de Validação do Dossiê de Assinatura.
