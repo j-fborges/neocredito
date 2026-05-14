@@ -290,6 +290,44 @@ const initialProposals: SigningProposal[] = [
       ],
     },
   },
+  {
+    id: "1415",
+    customer: { fullName: "Sandra Regina", cpf: "222.333.444-55" },
+    status: ESIGN_STATUS.AWAITING,
+    lastSigningEvent: daysAgo(4, 9, 0),
+    notified: false,
+    notifiable: true,
+    details: {
+      eSignLink: "https://assinatura.neo.com/assinar/nop1415",
+      sentDate: daysAgo(5, 10, 30),
+      contactAttempts: [
+        {
+          date: daysAgo(4, 14, 0),
+          medium: CONTACT_ATTEMPT_MEDIUM.EMAIL,
+          observation: "Envio de proposta",
+        },
+      ],
+    },
+  },
+  {
+    id: "1516",
+    customer: { fullName: "Ricardo Neves", cpf: "333.444.555-66" },
+    status: ESIGN_STATUS.AWAITING,
+    lastSigningEvent: daysAgo(2, 11, 20),
+    notified: false,
+    notifiable: true,
+    details: {
+      eSignLink: "https://assinatura.neo.com/assinar/qrs1516",
+      sentDate: daysAgo(3, 8, 0),
+      contactAttempts: [
+        {
+          date: daysAgo(2, 15, 0),
+          medium: CONTACT_ATTEMPT_MEDIUM.WHATSAPP,
+          observation: "Lembrete de assinatura",
+        },
+      ],
+    },
+  },
 ];
 
 let proposals: SigningProposal[] = JSON.parse(JSON.stringify(initialProposals));
@@ -301,7 +339,10 @@ export function resetProposals() {
 if (typeof window !== "undefined") {
   setInterval(() => {
     const awaitingNotifiable = proposals.filter(
-      (p) => p.notifiable && p.status === ESIGN_STATUS.AWAITING,
+      (p) =>
+        p.notifiable &&
+        p.status === ESIGN_STATUS.AWAITING &&
+        p.details.contactAttempts.length > 0,
     );
     if (awaitingNotifiable.length === 0) return;
 
@@ -353,3 +394,5 @@ export const handlers = [
     return HttpResponse.json({ data: proposal });
   }),
 ];
+
+export { initialProposals };

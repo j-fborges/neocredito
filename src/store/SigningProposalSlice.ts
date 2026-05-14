@@ -109,6 +109,14 @@ const SigningProposalSlice = createSlice({
       .addCase(fetchSigningProposals.fulfilled, (state, action) => {
         state.loading = false;
         state.itens = action.payload;
+        if (state.selectedProposal) {
+          const updated = action.payload.find(
+            (p) => p.id === state.selectedProposal!.id,
+          );
+          if (updated) {
+            state.selectedProposal = updated;
+          }
+        }
       })
       .addCase(fetchSigningProposals.rejected, (state, action) => {
         state.loading = false;
@@ -119,6 +127,14 @@ const SigningProposalSlice = createSlice({
       })
       .addCase(fetchSigningProposalsSilently.fulfilled, (state, action) => {
         state.itens = action.payload;
+        if (state.selectedProposal) {
+          const updated = action.payload.find(
+            (p) => p.id === state.selectedProposal!.id,
+          );
+          if (updated) {
+            state.selectedProposal = updated;
+          }
+        }
       })
       .addCase(fetchSigningProposalsSilently.rejected, (state, action) => {
         state.error = action.error.message ?? "Error loading proposals";

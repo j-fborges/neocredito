@@ -18,9 +18,15 @@ export default function DetailsModal({
   onClose,
 }: DetailsModalProps) {
   const { modal } = messages.proposal;
+  const isNew =
+    proposal?.notifiable && proposal.status === "SIGNED" && !proposal.notified;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+      role="dialog"
+      aria-modal="true"
+    >
       <div className="bg-custom-lightgray rounded-lg p-6 max-w-lg w-full max-h-[80vh] overflow-auto">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-bold text-brand-blue-dark">
@@ -34,7 +40,6 @@ export default function DetailsModal({
             <X size={24} />
           </button>
         </div>
-
         <hr className="border-gray-200 mb-4" />
 
         {loading && <p>{messages.proposal.loading}</p>}
@@ -53,12 +58,10 @@ export default function DetailsModal({
               </p>
               <p>
                 <strong>{modal.status}:</strong>{" "}
-                <StatusBadge status={proposal.status} />
+                <StatusBadge status={proposal.status} pulse={isNew} />
               </p>
             </div>
-
             <hr className="border-gray-200" />
-
             <div>
               <p>
                 <strong>{modal.link}:</strong>{" "}
@@ -76,9 +79,7 @@ export default function DetailsModal({
                 {new Date(proposal.details.sentDate).toLocaleString("pt-BR")}
               </p>
             </div>
-
             <hr className="border-gray-200" />
-
             <div>
               <strong>{modal.attempts}:</strong>
               <ContactAttemptList attempts={proposal.details.contactAttempts} />

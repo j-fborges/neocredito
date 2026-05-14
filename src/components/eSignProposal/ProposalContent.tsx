@@ -65,6 +65,11 @@ export default function ProposalContent({
 
   return (
     <section aria-label="Lista de propostas">
+      <div className="text-center pb-2 text-gray-500 flex lg:hidden">
+        <p className="text-xs">
+          {messages.proposal.detailPanel.emptyDescription}
+        </p>
+      </div>
       <ProposalList itens={itens} onRowClick={onRowClick} />
     </section>
   );

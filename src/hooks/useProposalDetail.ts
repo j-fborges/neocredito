@@ -1,15 +1,17 @@
 import { useCallback } from "react";
 
-import { useAppDispatch } from "../store/hooks";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 import {
   setSelection,
   clearSelection,
   notifyProposal,
+  selectProposals,
 } from "../store/SigningProposalSlice";
 import type { SigningProposal } from "../types/signingProposal";
 
 export function useProposalDetail() {
   const dispatch = useAppDispatch();
+  const { selectedProposal } = useAppSelector(selectProposals);
 
   const handleRowClick = useCallback(
     (proposal: SigningProposal) => {
@@ -26,8 +28,15 @@ export function useProposalDetail() {
   );
 
   const handleCloseModal = useCallback(() => {
+    if (
+      selectedProposal?.notifiable &&
+      selectedProposal.status === "SIGNED" &&
+      !selectedProposal.notified
+    ) {
+      dispatch(notifyProposal(selectedProposal.id));
+    }
     dispatch(clearSelection());
-  }, [dispatch]);
+  }, [dispatch, selectedProposal]);
 
   return { handleRowClick, handleCloseModal };
 }

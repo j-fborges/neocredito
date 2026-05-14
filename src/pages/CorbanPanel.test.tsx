@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
 import { Provider } from "react-redux";
@@ -210,11 +210,12 @@ describe("CorbanPanel", () => {
     const firstProposalRow = rows[1];
     await userEvent.click(firstProposalRow);
 
-    expect(await screen.findByText("123.456.789-00")).toBeInTheDocument();
-    expect(screen.getByLabelText("Fechar modal")).toBeInTheDocument();
+    const dialog = await screen.findByRole("dialog");
+    expect(within(dialog).getByText("123.456.789-00")).toBeInTheDocument();
+    expect(within(dialog).getByLabelText("Fechar modal")).toBeInTheDocument();
 
-    await userEvent.click(screen.getByLabelText("Fechar modal"));
-    expect(screen.queryByText("123.456.789-00")).not.toBeInTheDocument();
+    await userEvent.click(within(dialog).getByLabelText("Fechar modal"));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
   it("dispatches notifyProposal when clicking a notifiable unread row", async () => {
@@ -247,6 +248,7 @@ describe("CorbanPanel", () => {
 
     expect(patchHandler).toHaveBeenCalledWith("707");
 
-    expect(await screen.findByText("555.666.777-88")).toBeInTheDocument();
+    const dialog = await screen.findByRole("dialog");
+    expect(within(dialog).getByText("555.666.777-88")).toBeInTheDocument();
   });
 });

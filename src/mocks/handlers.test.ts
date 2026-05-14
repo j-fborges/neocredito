@@ -1,9 +1,13 @@
 import { describe, expect, it, beforeEach } from "vitest";
 
 import { server } from "../mocks/server";
-import type { ApiResponse, SigningProposal } from "../types/signingProposal";
+import {
+  ESIGN_STATUS,
+  type ApiResponse,
+  type SigningProposal,
+} from "../types/signingProposal";
 
-import { handlers, resetProposals } from "./handlers";
+import { handlers, initialProposals, resetProposals } from "./handlers";
 
 describe("SigningProposal Handlers (via MSW global)", () => {
   beforeEach(() => {
@@ -91,5 +95,18 @@ describe("SigningProposal Handlers (via MSW global)", () => {
   it("PATCH on nonexistent id returns 404", async () => {
     const res = await fetch("/api/proposals/9999/notify", { method: "PATCH" });
     expect(res.status).toBe(404);
+  });
+
+  it("AWAITING proposals without contact attempts should not be eligible for auto-signing", () => {
+    const awaitingWithoutAttempts = initialProposals.filter(
+      (p) =>
+        p.status === ESIGN_STATUS.AWAITING &&
+        p.notifiable &&
+        p.details.contactAttempts.length === 0,
+    );
+    expect(awaitingWithoutAttempts.length).toBeGreaterThan(0);
+    awaitingWithoutAttempts.forEach((p) => {
+      expect(p.details.contactAttempts).toHaveLength(0);
+    });
   });
 });

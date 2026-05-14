@@ -34,6 +34,14 @@ export const messages = {
         observation: "Observação",
       },
     },
+    detailPanel: {
+      emptyTitle: "Nenhuma proposta selecionada",
+      emptyDescription:
+        "Clique em uma linha da tabela para visualizar os detalhes.",
+    },
+    toast: {
+      newSignature: "Nova assinatura: {name} ({id})",
+    },
   },
   status: {
     AWAITING: "Aguardando",

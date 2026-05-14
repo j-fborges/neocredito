@@ -129,3 +129,7 @@ Ajustes de responsividade para a tela da User Story `US-01`. Criação de Refetc
 ### 2.15. 21º Commit
 
 Estilização e refatoração do código para consistencia visual e principalmente **ergonomia**. Por ser uma tela de trabalho, ela precisa ser pouco cansativa visualmente, preferencialmente usando pouco contraste. Por isso a estilização adotou tons de cinza como base. Além disso foi adicionado intercalamento de cores nas linhas da tabela de Propostas de Assinatura para maior leiturabilidade da tabela.
+
+### 2.16. 22º Commit
+
+Últimos ajustes da `US-01`. Refatoração do *Modal de Detalhes da Proposta*, criação do `ProposalDetailsPanel.tsx` para melhor visualização e usabilidade em desktop e telas maiores. Refatoração nas *actions* `.fulfilled` de chamadas da API mockada pela *Slice de Propostas*, assim como no hook `useProposalDetails.ts` e handlers do *MWS* para resolver a atualização de badges e notificações nos modais.
