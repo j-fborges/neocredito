@@ -4,11 +4,8 @@ import {
   type PayloadAction,
 } from "@reduxjs/toolkit";
 
-import type {
-  ApiResponse,
-  ESignStatus,
-  SigningProposal,
-} from "../types/signingProposal";
+import type { ApiResponse } from "../types/apiResponse";
+import type { ESignStatus, SigningProposal } from "../types/signingProposal";
 
 import type { RootState } from "./index";
 

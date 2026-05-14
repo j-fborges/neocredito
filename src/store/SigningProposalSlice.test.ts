@@ -5,7 +5,8 @@ import { describe, expect, it } from "vitest";
 import { server } from "../mocks/server";
 import type { SigningProposal } from "../types/signingProposal";
 
-import reducer, {
+import dossierReducer from "./ESignDossierSlice";
+import proposalReducer, {
   clearSelection,
   fetchSigningProposals,
   notifyProposal,
@@ -18,7 +19,11 @@ import uiReducer from "./UiSlice";
 
 function createTestStore() {
   return configureStore({
-    reducer: { signingProposals: reducer, ui: uiReducer },
+    reducer: {
+      signingProposals: proposalReducer,
+      ui: uiReducer,
+      eSignDossier: dossierReducer,
+    },
   });
 }
 
