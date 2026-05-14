@@ -1,5 +1,7 @@
 import { http, HttpResponse } from "msw";
 
+import type { ApiResponse } from "../types/apiResponse";
+import type { Dossier } from "../types/eSignDossier";
 import {
   CONTACT_ATTEMPT_MEDIUM,
   ESIGN_STATUS,
@@ -13,6 +15,54 @@ const daysAgo = (days: number, hour = 0, minute = 0) => {
   d.setHours(hour, minute, 0, 0);
   return d.toISOString();
 };
+
+const dossiers: Dossier[] = [
+  {
+    proposalId: "101",
+    signatory: {
+      fullName: "João Silva",
+      cpf: "123.456.789-00",
+      signatureDate: daysAgo(5, 10, 30),
+      ip: "192.168.1.10",
+      coordinates: { lat: -23.5505, lon: -46.6333 },
+      address: "Av. Paulista, 1000 - São Paulo, SP",
+    },
+    selfieUrl: "https://via.placeholder.com/300x400",
+    documentUrl: "https://via.placeholder.com/400x300",
+    facialSimilarity: 98.5,
+    status: "PENDING_VALIDATION",
+  },
+  {
+    proposalId: "404",
+    signatory: {
+      fullName: "Ana Oliveira",
+      cpf: "222.333.444-55",
+      signatureDate: daysAgo(3, 8, 0),
+      ip: "10.0.0.5",
+      coordinates: { lat: -22.9068, lon: -43.1729 },
+      address: "Rua do Ouvidor, 50 - Rio de Janeiro, RJ",
+    },
+    selfieUrl: "https://via.placeholder.com/300x400",
+    documentUrl: "https://via.placeholder.com/400x300",
+    facialSimilarity: 87.2,
+    status: "APPROVED_AWAITING_AUDIT",
+  },
+  {
+    proposalId: "707",
+    signatory: {
+      fullName: "Fernando Alves",
+      cpf: "555.666.777-88",
+      signatureDate: daysAgo(15, 18, 0),
+      ip: "172.16.0.1",
+      coordinates: { lat: -19.9167, lon: -43.9345 },
+      address: "Av. Afonso Pena, 300 - Belo Horizonte, MG",
+    },
+    selfieUrl: "https://via.placeholder.com/300x400",
+    documentUrl: "https://via.placeholder.com/400x300",
+    facialSimilarity: 45.6,
+    status: "PENDING_VALIDATION",
+  },
+];
 
 const initialProposals: SigningProposal[] = [
   {
@@ -356,6 +406,14 @@ if (typeof window !== "undefined") {
 }
 
 export const handlers = [
+  http.get("/api/dossier/:proposalId", ({ params }) => {
+    const dossier = dossiers.find((d) => d.proposalId === params.proposalId);
+    if (!dossier) {
+      return new HttpResponse(null, { status: 404 });
+    }
+    const response: ApiResponse<Dossier> = { data: dossier };
+    return HttpResponse.json(response);
+  }),
   http.get("/api/proposals", ({ request }) => {
     const url = new URL(request.url);
     const statusFilter = url.searchParams.get("status") as ESignStatus | null;

@@ -8,7 +8,7 @@ export const messages = {
       statusLabel: "Filtrar por status",
     },
     table: {
-      headerId: "ID",
+      headerId: "Nº Proposta",
       headerCustomer: "Cliente",
       headerStatus: "Status",
       headerLastEvent: "Último Evento",

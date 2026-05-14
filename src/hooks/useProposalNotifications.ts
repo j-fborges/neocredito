@@ -5,7 +5,6 @@ import { useAppDispatch } from "../store/hooks";
 import { addToast } from "../store/UiSlice";
 import type { SigningProposal } from "../types/signingProposal";
 
-// Módulo-level Set: persiste durante toda a vida da SPA
 const notifiedIds = new Set<string>();
 
 export function useProposalNotifications(itens: SigningProposal[]) {

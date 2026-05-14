@@ -1,11 +1,8 @@
 import { describe, expect, it, beforeEach } from "vitest";
 
 import { server } from "../mocks/server";
-import {
-  ESIGN_STATUS,
-  type ApiResponse,
-  type SigningProposal,
-} from "../types/signingProposal";
+import type { ApiResponse } from "../types/apiResponse";
+import { ESIGN_STATUS, type SigningProposal } from "../types/signingProposal";
 
 import { handlers, initialProposals, resetProposals } from "./handlers";
 
@@ -108,5 +105,20 @@ describe("SigningProposal Handlers (via MSW global)", () => {
     awaitingWithoutAttempts.forEach((p) => {
       expect(p.details.contactAttempts).toHaveLength(0);
     });
+  });
+
+  it("GET /api/dossier/:proposalId returns dossier for existing proposal", async () => {
+    const res = await fetch("/api/dossier/101");
+    const body = await res.json();
+    expect(res.status).toBe(200);
+    expect(body.data).toHaveProperty("proposalId", "101");
+    expect(body.data.signatory).toHaveProperty("fullName");
+    expect(body.data).toHaveProperty("facialSimilarity");
+    expect(body.data).toHaveProperty("status");
+  });
+
+  it("GET /api/dossier/:proposalId returns 404 for nonexistent", async () => {
+    const res = await fetch("/api/dossier/9999");
+    expect(res.status).toBe(404);
   });
 });

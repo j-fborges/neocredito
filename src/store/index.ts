@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 
+import ESignDossierReducer from "./ESignDossierSlice";
 import SigningProposalsReducer from "./SigningProposalSlice";
-import uiReducer from "./UiSlice";
+import UiReducer from "./UiSlice";
 
 export const store = configureStore({
   reducer: {
     signingProposals: SigningProposalsReducer,
-    ui: uiReducer,
+    ui: UiReducer,
+    eSignDossier: ESignDossierReducer,
   },
 });
 export type RootState = ReturnType<typeof store.getState>;
