@@ -1,5 +1,6 @@
 import { Suspense, lazy } from "react";
 
+import { messages } from "../../i18n/pt-BR";
 import type { SignatoryData } from "../../types/eSignDossier";
 
 import MapErrorBoundary from "./MapErrorBoundary";
@@ -12,6 +13,8 @@ interface MapSectionProps {
 }
 
 export default function MapSection({ signatory }: MapSectionProps) {
+  const { map } = messages.dossier;
+
   const fallback = (
     <StaticMapFallback
       lat={signatory.coordinates.lat}
@@ -21,32 +24,30 @@ export default function MapSection({ signatory }: MapSectionProps) {
 
   return (
     <div>
-      <h3 className="text-lg font-semibold text-brand-blue-dark mb-2">
-        Localização geográfica:
+      <h3 className="text-lg font-semibold font-mono text-brand-blue-dark mb-2">
+        {map.title}
       </h3>
 
       <div className="text-sm text-gray-700 mb-2 flex flex-wrap gap-x-2 gap-y-1">
         <span>
-          <strong>Endereço:</strong> {signatory.address},{" "}
+          <strong>{map.address}:</strong> {signatory.address},{" "}
           {signatory.neighborhood}
         </span>
         <span className="hidden sm:inline">|</span>
         <span>
-          <strong>CEP:</strong> {signatory.zipCode}
+          <strong>{map.zipCode}:</strong> {signatory.zipCode}
         </span>
         <span className="hidden sm:inline">|</span>
         <span>
-          <strong>Cidade:</strong> {signatory.city}
+          <strong>{map.city}:</strong> {signatory.city}
         </span>
         <span className="hidden sm:inline">|</span>
         <span>
-          <strong>País:</strong> {signatory.country}
+          <strong>{map.country}:</strong> {signatory.country}
         </span>
       </div>
 
-      <p className="text-xs text-gray-500 italic mb-1">
-        Local aproximado da assinatura
-      </p>
+      <p className="text-xs text-gray-500 italic mb-1">{map.approximate}</p>
 
       <Suspense fallback={fallback}>
         <MapErrorBoundary fallback={fallback}>
@@ -58,7 +59,8 @@ export default function MapSection({ signatory }: MapSectionProps) {
       </Suspense>
 
       <p className="text-xs text-gray-500 mt-1">
-        Coordenadas: {signatory.coordinates.lat}, {signatory.coordinates.lon}
+        {map.coordinates}: {signatory.coordinates.lat},{" "}
+        {signatory.coordinates.lon}
       </p>
     </div>
   );

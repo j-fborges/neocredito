@@ -168,3 +168,7 @@ Refatoração da sessão dos botões de **Decisão do Operador** sobre o Dossiê
 Refatoração e desacoplamento de responsabilidades em toda a página do Dossiê. Criação de `DossierHeader.tsx` e concentração das ações da página no hook `useDocierActions.tsx` reunindo funções de controle de estado do Redux Slice e Context. Refatoração do controle de estados do fluxo de ações de avaliação do dossiê.
 
 Escrita de testes unitarios para `ESignDossierSlice.ts` e refatoração dos testes de `ESignDossierPanel.tsx`.
+
+### 2.23. 32º Commit
+
+Adição de novos tokens i18n para português nos novos componentes do Dossiê.

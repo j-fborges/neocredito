@@ -12,9 +12,14 @@ export default function ESignDossierPanel() {
   const { id } = useParams<{ id: string }>();
   const { dossier, loading, error } = useDossierLoader(id);
 
-  if (loading) return <div className="p-6">Carregando...</div>;
-  if (error) return <div className="p-6 text-red-500">Erro: {error}</div>;
-  if (!dossier) return <div className="p-6">Nenhum dossiê encontrado.</div>;
+  if (loading) return <div className="p-6">{messages.dossier.loading}</div>;
+  if (error)
+    return (
+      <div className="p-6 text-red-500">
+        {messages.dossier.error} {error}
+      </div>
+    );
+  if (!dossier) return <div className="p-6">{messages.dossier.notFound}</div>;
 
   return (
     <div className="flex flex-col md:flex-row h-full w-full">

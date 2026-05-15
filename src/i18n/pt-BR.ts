@@ -57,12 +57,51 @@ export const messages = {
     selfie: "Selfie",
     document: "Documento",
     noImage: "Imagem não disponível",
-    approve: "Aprovado",
-    disapprove: "Reprovado",
     statusDossier: {
       PENDING_VALIDATION: "Pendente",
       APPROVED_AWAITING_AUDIT: "Aprovado - Aguardando Auditoria",
       DISAPPROVED_PENDING: "Reprovado - Pendente",
+    },
+    decision: {
+      question: "Aderente a política de validação?",
+      approve: "Aprovado:",
+      approveDetail: "dentro da política",
+      disapprove: "Reprovado:",
+      disapproveDetail: "fora da política",
+    },
+    approvalModal: {
+      title: "Confirmar aprovação",
+      message:
+        "Deseja aprovar este dossiê? O status será alterado para “Aguardando Auditoria”.",
+      cancel: "Cancelar",
+      confirm: "Confirmar",
+    },
+    disapprovalModal: {
+      title: "Motivo da reprovação",
+      placeholder: "Descreva o motivo da reprovação.",
+      cancel: "Cancelar",
+      submit: "Reprovar",
+    },
+    evidence: {
+      title: "Evidências Visuais",
+    },
+    map: {
+      title: "Localização geográfica:",
+      approximate: "Local aproximado da assinatura",
+      address: "Endereço",
+      zipCode: "CEP",
+      city: "Cidade",
+      country: "País",
+      coordinates: "Coordenadas",
+      fallback: "Local aproximado — clique para ampliar no OpenStreetMap",
+      notAvailable: "Mapa interativo não disponível",
+    },
+    loading: "Carregando...",
+    error: "Erro:",
+    notFound: "Nenhum dossiê encontrado.",
+    toast: {
+      approved: "Dossiê aprovado com sucesso",
+      disapproved: "Dossiê reprovado",
     },
   },
   status: {

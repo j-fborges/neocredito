@@ -1,3 +1,5 @@
+import { messages } from "../../i18n/pt-BR";
+
 interface ActionButtonsProps {
   onApproveClick: () => void;
   onDisapproveClick: () => void;
@@ -11,6 +13,8 @@ export default function ActionButtons({
   disabled,
   sticky = true,
 }: ActionButtonsProps) {
+  const { decision } = messages.dossier;
+
   return (
     <div
       className={`px-2 w-full ${
@@ -21,7 +25,7 @@ export default function ActionButtons({
     >
       <div className="w-full flex flex-row justify-center mb-2">
         <span className="font-mono font-bold uppercase text-center max-md:text-xs w-fit text-brand-blue-dark">
-          {"Aderente a política de validação?"}
+          {decision.question}
         </span>
       </div>
       <div className={`flex gap-2 lg:gap-4 w-full lg:justify-start flex-row`}>
@@ -30,18 +34,18 @@ export default function ActionButtons({
           disabled={disabled}
           className="py-2 leading-4 border-2 shadow-md shadow-custom-shadow border-brand-blue-dark bg-green-800 text-xs xs:text-sm text-white hover:text-brand-blue-dark rounded-lg hover:bg-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex-1 font-mono font-bold uppercase"
         >
-          {"Aprovado:"}
+          {decision.approve}
           <br />
-          <u>{"dentro da política"}</u>
+          <u>{decision.approveDetail}</u>
         </button>
         <button
           onClick={onDisapproveClick}
           disabled={disabled}
           className="py-2 leading-4 border-2 shadow-md shadow-custom-shadow border-brand-blue-dark bg-red-700 text-xs xs:text-sm text-white hover:text-brand-blue-dark rounded-lg hover:bg-[#ff3030] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex-1 font-mono font-bold uppercase"
         >
-          {`Reprovado:`}
+          {decision.disapprove}
           <br />
-          <u>{"fora da política"}</u>
+          <u>{decision.disapproveDetail}</u>
         </button>
       </div>
       <hr className="border-brand-blue-dark/20 mb-4 mt-4 max-md:hidden" />

@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 
+import { messages } from "../i18n/pt-BR";
 import { approveDossier, disapproveDossier } from "../store/ESignDossierSlice";
 import { useAppDispatch } from "../store/hooks";
 import { addToast } from "../store/UiSlice";
@@ -20,7 +21,10 @@ export function useDossierActions(
       .unwrap()
       .then(() => {
         dispatch(
-          addToast({ message: "Dossiê aprovado com sucesso", type: "success" }),
+          addToast({
+            message: messages.dossier.toast.approved,
+            type: "success",
+          }),
         );
       })
       .catch(() => {});
@@ -32,7 +36,12 @@ export function useDossierActions(
       dispatch(disapproveDossier({ proposalId, reason }))
         .unwrap()
         .then(() => {
-          dispatch(addToast({ message: "Dossiê reprovado", type: "error" }));
+          dispatch(
+            addToast({
+              message: messages.dossier.toast.disapproved,
+              type: "error",
+            }),
+          );
         })
         .catch(() => {});
       setShowReason(false);
