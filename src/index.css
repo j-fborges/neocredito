@@ -65,3 +65,7 @@
 .animate-fade-out {
   animation: fadeOut 0.4s ease forwards;
 }
+
+.leaflet-container {
+  z-index: 1;
+}

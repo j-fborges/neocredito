@@ -130,26 +130,30 @@ Ajustes de responsividade para a tela da User Story `US-01`. Criação de Refetc
 
 Estilização e refatoração do código para consistencia visual e principalmente **ergonomia**. Por ser uma tela de trabalho, ela precisa ser pouco cansativa visualmente, preferencialmente usando pouco contraste. Por isso a estilização adotou tons de cinza como base. Além disso foi adicionado intercalamento de cores nas linhas da tabela de Propostas de Assinatura para maior leiturabilidade da tabela.
 
-### 2.16. 22º Commit
+### 2.16. 23º Commit
 
 Últimos ajustes da `US-01`. Refatoração do *Modal de Detalhes da Proposta*, criação do `ProposalDetailsPanel.tsx` para melhor visualização e usabilidade em desktop e telas maiores. Refatoração nas *actions* `.fulfilled` de chamadas da API mockada pela *Slice de Propostas*, assim como no hook `useProposalDetails.ts` e handlers do *MWS* para resolver a atualização de badges e notificações nos modais.
 
-### 2.17. 23º Commit
+### 2.17. 24º Commit
 
 Criação da rota `/us-02` e botão de navegação entre *User Stories*, Criação de `ESignDossierPanel.tsx` para implantação do Painel de Validação do Dossiê de Assinatura.
 
-### 2.17. 24º Commit
+### 2.17. 25º Commit
 
 Estruturação da tipagem para os *Dossiês de Assinatura*, **endpoints e handlers** para a API mockada servir `ESignDossier`. Criação e estruturação de Slice para controle de estados dos *Dossiês* com *actions* para chamadas da API mockada. Refatoração dos arquivos de tipagem prévios. Novos testes para os novos *handlers endpoints* do *MWS*.
 
-### 2.18. 26º Commit
+### 2.18. 27º Commit
 
 Primeira iteração dinâmica do *Painel de Validação do Dossiê de Assinatura*, disposição das primeiras informações, gerenciamento de estado básico com cobertura condicional para `loading` e `error` a partir de requisição através do **Thunk do Slice de Dossiês** estruturado no commit anterior. Configuração de rota `react-router` integrada ao endpoint do *MWS* aceitando `URL Query Params` (no caso o *Nº da Proposta/Dossiê* - `id`). Testagem básica de `ESignDossierPanel.tsx`.
 
 Adicionado `npm run build` ao `pre-commit` do **Husky**.
 
-### 2.19. 27º Commit
+### 2.19. 28º Commit
 
 Criação dos componentes de mapas para os dados de *Localização Geográfica da Assinatura* a partir do isolamento de responsabilidades em `MapSection.tsx`. Apresenta um mapa dinâmico(`DynamicMap`) utilizando o pacote `leaflet` e um mapa estático de fallback(`StaticMapFallback`) a partir da API do *https://www.openstreetmap.org/* .
 
 OBS: Para o tratamento de erro em `MapSection.tsx` foi criado `MapErrorBoundary.tsx` utilizando a estrutura `Class Component` que o **React** fornece como opção para viabilizar a interceptação erros lançados durante a renderização. (e evitar que a aplicação quebre)
+
+### 2.20. 29º Commit
+
+Criação dos components de inspeção de fotos e métrica de similaridade facial, com `zoom` e `pan` com o pacote `yet-another-react-lightbox`, desacoplamento do `ESignDossierPanel.tsx` em componentes de seção. Complementação de testes para novas implementações do `ESignDossierPanel.tsx`.

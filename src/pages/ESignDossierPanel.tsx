@@ -2,7 +2,9 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import DossierStatusBadge from "../components/eSignDossier/DossierStatusBadge";
+import EvidenceSection from "../components/eSignDossier/EvidenceSection";
 import MapSection from "../components/eSignDossier/MapSection";
+import SignatoryDataSection from "../components/eSignDossier/SignatoryDataSection";
 import { messages } from "../i18n/pt-BR";
 import {
   fetchDossier,
@@ -58,39 +60,22 @@ export default function ESignDossierPanel() {
 
       <hr className="border-brand-blue-dark/20 my-4" />
 
-      <h2 className="leading-6 text-xl mb-4 font-sans text-brand-blue-dark">
-        {messages.dossier.signatoryData}
-      </h2>
-      <div className="space-y-2 pl-2">
-        <p>
-          <strong>{messages.dossier.name}:</strong> {dossier.signatory.fullName}
-        </p>
-        <p>
-          <strong>{messages.dossier.cpf}:</strong> {dossier.signatory.cpf}
-        </p>
-        <p>
-          <strong>{messages.dossier.signatureDate}:</strong>{" "}
-          {formatDate(dossier.signatory.signatureDate)}
-        </p>
-        <p>
-          <strong>{messages.dossier.ip}:</strong> {dossier.signatory.ip}
-        </p>
-        <p>
-          <strong>{messages.dossier.address}:</strong>{" "}
-          {dossier.signatory.address}
-        </p>
-      </div>
-
-      <hr className="border-brand-blue-dark/20 my-4" />
-
-      <p>
-        <strong>{messages.dossier.facialSimilarity}:</strong>{" "}
-        {dossier.facialSimilarity}%
-      </p>
+      <SignatoryDataSection
+        signatory={dossier.signatory}
+        formatDate={formatDate}
+      />
 
       <hr className="border-brand-blue-dark/20 my-4" />
 
       <MapSection signatory={dossier.signatory} />
+
+      <hr className="border-brand-blue-dark/20 my-4" />
+
+      <EvidenceSection
+        selfieUrl={dossier.selfieUrl}
+        documentUrl={dossier.documentUrl}
+        facialSimilarity={dossier.facialSimilarity}
+      />
     </main>
   );
 }

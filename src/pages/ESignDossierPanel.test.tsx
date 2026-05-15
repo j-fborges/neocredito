@@ -24,8 +24,8 @@ const mockDossier: Dossier = {
     city: "São Paulo",
     country: "Brasil",
   },
-  selfieUrl: "https://via.placeholder.com/300x400",
-  documentUrl: "https://via.placeholder.com/400x300",
+  selfieUrl: "https://placehold.co/300x400?text=Selfie",
+  documentUrl: "https://placehold.co/400x300?text=Documento",
   facialSimilarity: 98.5,
   status: "PENDING_VALIDATION",
 };
@@ -48,26 +48,21 @@ describe("ESignDossierPanel", () => {
       </Provider>,
     );
 
-    // Título principal
     expect(
       await screen.findByText("Dossiê de E-Assinatura"),
     ).toBeInTheDocument();
 
-    // Número da proposta e status
     expect(screen.getByText(/Nº Proposta: 101/)).toBeInTheDocument();
     expect(screen.getByText("Pendente")).toBeInTheDocument();
 
-    // Dados do assinante
     expect(screen.getByText(/João Silva/)).toBeInTheDocument();
     expect(screen.getByText(/123.456.789-00/)).toBeInTheDocument();
     expect(screen.getByText(/10\/05\/2025/)).toBeInTheDocument();
     expect(screen.getByText(/192.168.1.10/)).toBeInTheDocument();
 
-    // Endereço aparece em dois lugares
     const addressElements = screen.getAllByText(/Av\. Paulista, 1000/);
     expect(addressElements.length).toBeGreaterThanOrEqual(2);
 
-    // Seção de localização
     expect(screen.getByText("Localização geográfica:")).toBeInTheDocument();
     expect(screen.getByText(/Bela Vista/)).toBeInTheDocument();
     expect(screen.getByText(/01310-100/)).toBeInTheDocument();
@@ -78,13 +73,28 @@ describe("ESignDossierPanel", () => {
     ).toBeInTheDocument();
     expect(screen.getByText(/-23.5505, -46.6333/)).toBeInTheDocument();
 
-    // Mapa: como o Leaflet não funciona em jsdom, o fallback estático é exibido
-    // Verificamos a presença da imagem do tile do OpenStreetMap
     const mapImage = screen.getByAltText(
       "Mapa da localização -23.5505, -46.6333",
     );
     expect(mapImage).toBeInTheDocument();
     expect(mapImage.tagName).toBe("IMG");
+
+    const selfieImg = screen.getByAltText("Selfie do assinante");
+    expect(selfieImg).toBeInTheDocument();
+    expect(selfieImg).toHaveAttribute(
+      "src",
+      "https://placehold.co/300x400?text=Selfie",
+    );
+
+    const docImg = screen.getByAltText("Documento do assinante");
+    expect(docImg).toBeInTheDocument();
+    expect(docImg).toHaveAttribute(
+      "src",
+      "https://placehold.co/400x300?text=Documento",
+    );
+
+    const similarityTexts = screen.getAllByText(/98\.5%/);
+    expect(similarityTexts.length).toBeGreaterThanOrEqual(1);
   });
 
   it("shows loading state", () => {
