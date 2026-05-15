@@ -1,32 +1,56 @@
+# Diagrama de Tipagem de Estados - Redux Store
+
+Estrutura do estado global gerenciado pelo Redux Toolkit.
+
 ```mermaid
-
 classDiagram
-    class RootState {
-        +propostas: PropostasState
-        +dossie: DossieState
+    class EstadoRaiz {
+        +propostas: EstadoPropostas
+        +dossie: EstadoDossie
     }
 
-    class PropostasState {
-        +Proposta[] lista
-        +PropostaDetalhes? detalhe
-        +StatusAssinatura? filtroStatus
-        +string termoBusca
-        +boolean loadingLista
-        +boolean loadingDetalhe
-        +string? erro
+    class EstadoPropostas {
+        +lista: PropostaAssinatura[]
+        +detalhe: DetalhesProposal | null
+        +filtroStatus: StatusAssinatura | null
+        +termoBusca: string
+        +carregandoLista: boolean
+        +carregandoDetalhe: boolean
+        +erro: string | null
     }
 
-    class DossieState {
-        +Dossie? dossie
-        +boolean loading
-        +string? erro
-        +StatusDossie? decisao
-        +MotivoReprovacao? motivoReprovacao
-        +boolean confirmandoAprovacao
-        +boolean reprovando
+    class EstadoDossie {
+        +dados: Dossie | null
+        +carregando: boolean
+        +erro: string | null
+        +acaoEmProgresso: "aprovando" | "reprovando" | null
+        +rascunhoReprovacao: string
     }
 
-    RootState *-- PropostasState
-    RootState *-- DossieState
+    EstadoRaiz *-- EstadoPropostas : contém
+    EstadoRaiz *-- EstadoDossie : contém
 
 ```
+
+## Descrição dos Estados
+
+### EstadoRaiz
+Raiz da store Redux contendo todos os slices principais
+
+### EstadoPropostas
+Estado gerenciando a lista de propostas de assinatura e seus detalhes
+- **lista**: Array de propostas
+- **detalhe**: Detalhes de uma proposta específica
+- **filtroStatus**: Filtro por status atual
+- **termoBusca**: Termo de busca aplicado
+- **carregandoLista**: Indicador de carregamento da lista
+- **carregandoDetalhe**: Indicador de carregamento de detalhes
+- **erro**: Mensagem de erro se houver
+
+### EstadoDossie
+Estado gerenciando o dossiê de assinatura e processo de validação
+- **dados**: Dados do dossiê carregado
+- **carregando**: Indicador de carregamento
+- **erro**: Mensagem de erro se houver
+- **acaoEmProgresso**: Ação sendo executada (aprovação ou reprovação)
+- **rascunhoReprovacao**: Motivo de reprovação em edição

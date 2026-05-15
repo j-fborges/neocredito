@@ -1,5 +1,8 @@
-```mermaid
+# Diagrama para Tipagem de Objetos - Conceitual
 
+Não é necessariamente o que está implementado.* Aqui o pensamento é o de modelagens de entidades para além de instancias do frontend.
+
+```mermaid
 classDiagram
     class Cliente {
         +id: string
@@ -7,46 +10,63 @@ classDiagram
         +cpf: string
     }
 
-    class Proposta {
+    class PropostaAssinatura {
         +id: string
-        +numero: string
         +status: StatusAssinatura
-        +ultimoEvento: string
-        +notificacao: boolean
+        +ultimoEventoAssinatura: string
+        +notificado: boolean
+        +notificavel: boolean
+        +cliente: Cliente
+        +detalhes: DetalhesProposal
     }
 
-    class PropostaDetalhes {
+    class DetalhesProposal {
         +linkAssinatura: string
-        +dataEnvio: string
+        +dataSentimento: string
         +tentativasContato: TentativaContato[]
-    }
-
-    class DadosAssinante {
-        +dataAssinatura: string
-        +ip: string
-        +coordenadas: Coordenadas
-        +endereco: string
-    }
-
-    class Dossie {
-        +id: string
-        +numeroProposta: string
-        +selfieUrl: string
-        +documentoUrl: string
-        +similaridadeFacial: number
-        +statusValidacao: StatusDossie
-    }
-
-    class Coordenadas {
-        +lat: number
-        +lon: number
     }
 
     class TentativaContato {
         +id: string
         +data: string
-        +meio: string
+        +meio: MeioContato
         +observacao: string
+    }
+
+    class MeioContato {
+        <<enum>>
+        EMAIL
+        TELEFONE
+        WHATSAPP
+        SMS
+    }
+
+    class Dossie {
+        +id: string
+        +idProposta: string
+        +assinante: DadosAssinante
+        +urlSelfie: string
+        +urlDocumento: string
+        +similaridadeFacial: number
+        +status: StatusDossie
+    }
+
+    class DadosAssinante {
+        +nomeCompleto: string
+        +cpf: string
+        +dataAssinatura: string
+        +ip: string
+        +coordenadas: Coordenadas
+        +endereco: string
+        +bairro: string
+        +cep: string
+        +cidade: string
+        +pais: string
+    }
+
+    class Coordenadas {
+        +latitude: number
+        +longitude: number
     }
 
     class StatusAssinatura {
@@ -59,18 +79,38 @@ classDiagram
 
     class StatusDossie {
         <<enum>>
-        PENDENTE_VALIDACAO
+        VALIDACAO_PENDENTE
         APROVADO_AGUARDANDO_AUDITORIA
         REPROVADO_PENDENTE
     }
 
-    Cliente --|> Proposta : compõe
-    Cliente --|> DadosAssinante : compõe
-    Proposta <|-- PropostaDetalhes : compõe
-    Proposta "1" --> "*" TentativaContato : contém
-    Dossie "1" --> "1" DadosAssinante : compõe
-    Dossie "1" --> "1" Coordenadas : compõe (via DadosAssinante)
-    Proposta --> StatusAssinatura : usa
-    Dossie --> StatusDossie : usa
+    PropostaAssinatura --> Cliente : contém
+    PropostaAssinatura --> DetalhesProposal : contém
+    PropostaAssinatura --> StatusAssinatura : utiliza
+    DetalhesProposal "1" --> "*" TentativaContato : contém
+    TentativaContato --> MeioContato : utiliza
+    Dossie --> DadosAssinante : contém
+    Dossie --> Coordenadas : contém (via DadosAssinante)
+    Dossie --> StatusDossie : utiliza
 
 ```
+
+## Descrição dos Tipos
+
+### Cliente
+Dados básicos do cliente
+
+### PropostaAssinatura
+Proposta de assinatura eletrônica com status de processamento
+
+### DetalhesProposal
+Informações adicionais sobre a proposta de assinatura
+
+### TentativaContato
+Registro de tentativas de contato com o cliente
+
+### DadosAssinante
+Dados detalhados de quem assinou, incluindo localização
+
+### Dossie
+Dossiê completo de assinatura com validação
