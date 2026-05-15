@@ -161,3 +161,10 @@ Criação dos components de inspeção de fotos e métrica de similaridade facia
 ### 2.21. 30º Commit
 
 Criação do componente `ActionButtons.tsx` para a sessão dos botões de **Decisão do Operador** sobre o Dossiê. Desacoplamento das responsabilidades de controles de estado da tela `ESignDossierPanel.tsx` para os hooks `useDocierActions.ts` e `useDocierLoader.ts`. Criação de novos **Thunks** para o *Slice do Dossiê* `ESignDossierSlice.ts` e **handlers do MSW** para os *endpoints* correspondentes, estabelecendo o fluxo de chamadas para a API mockada **para Aprovar ou Desaprovar** o *Dossiê*. Desenvolvimento de *testes unitários* sobre os novos endpoints.
+
+### 2.22. 31º Commit
+
+Refatoração da sessão dos botões de **Decisão do Operador** sobre o Dossiê. Criação de `ApprovalModal.tsx`, `DisapprovalModal.tsx`, `DesicionSection.tsx`.
+Refatoração e desacoplamento de responsabilidades em toda a página do Dossiê. Criação de `DossierHeader.tsx` e concentração das ações da página no hook `useDocierActions.tsx` reunindo funções de controle de estado do Redux Slice e Context. Refatoração do controle de estados do fluxo de ações de avaliação do dossiê.
+
+Escrita de testes unitarios para `ESignDossierSlice.ts` e refatoração dos testes de `ESignDossierPanel.tsx`.

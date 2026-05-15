@@ -1,110 +1,50 @@
-import { X } from "lucide-react";
-import { useState } from "react";
-
 interface ActionButtonsProps {
-  onApprove: () => void;
-  onDisapprove: (reason: string) => void;
+  onApproveClick: () => void;
+  onDisapproveClick: () => void;
   disabled: boolean;
+  sticky?: boolean;
 }
 
 export default function ActionButtons({
-  onApprove,
-  onDisapprove,
+  onApproveClick,
+  onDisapproveClick,
   disabled,
+  sticky = true,
 }: ActionButtonsProps) {
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [showReason, setShowReason] = useState(false);
-  const [reason, setReason] = useState("");
-
-  const handleDisapprove = () => {
-    if (!reason.trim()) return;
-    onDisapprove(reason);
-    setShowReason(false);
-    setReason("");
-  };
-
   return (
-    <>
-      <div className="flex gap-4 mt-6">
+    <div
+      className={`px-2 w-full ${
+        sticky
+          ? "max-md:fixed max-md:bottom-0 max-md:left-0 max-md:px-1 max-md:right-0 max-md:bg-white max-md:p-4 max-md:py-2  max-md:border-t-2 max-md:border-brand-blue-dark max-md:z-40"
+          : ""
+      }`}
+    >
+      <div className="w-full flex flex-row justify-center mb-2">
+        <span className="font-mono font-bold uppercase text-center max-md:text-xs w-fit text-brand-blue-dark">
+          {"Aderente a política de validação?"}
+        </span>
+      </div>
+      <div className={`flex gap-2 lg:gap-4 w-full lg:justify-start flex-row`}>
         <button
-          onClick={() => setShowConfirm(true)}
+          onClick={onApproveClick}
           disabled={disabled}
-          className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+          className="py-2 leading-4 border-2 shadow-md shadow-custom-shadow border-brand-blue-dark bg-green-800 text-xs xs:text-sm text-white hover:text-brand-blue-dark rounded-lg hover:bg-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex-1 font-mono font-bold uppercase"
         >
-          Aprovado
+          {"Aprovado:"}
+          <br />
+          <u>{"dentro da política"}</u>
         </button>
         <button
-          onClick={() => setShowReason(true)}
+          onClick={onDisapproveClick}
           disabled={disabled}
-          className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+          className="py-2 leading-4 border-2 shadow-md shadow-custom-shadow border-brand-blue-dark bg-red-700 text-xs xs:text-sm text-white hover:text-brand-blue-dark rounded-lg hover:bg-[#ff3030] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex-1 font-mono font-bold uppercase"
         >
-          Reprovado
+          {`Reprovado:`}
+          <br />
+          <u>{"fora da política"}</u>
         </button>
       </div>
-
-      {showConfirm && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-sm w-full">
-            <h3 className="text-lg font-semibold mb-4">Confirmar aprovação</h3>
-            <p className="text-gray-600 mb-6">Deseja aprovar este dossiê?</p>
-            <div className="flex justify-end gap-3">
-              <button
-                onClick={() => setShowConfirm(false)}
-                className="px-4 py-2 border rounded-lg hover:bg-gray-100"
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={() => {
-                  onApprove();
-                  setShowConfirm(false);
-                }}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
-              >
-                Confirmar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {showReason && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold">Motivo da reprovação</h3>
-              <button
-                onClick={() => setShowReason(false)}
-                className="text-gray-500 hover:text-black"
-              >
-                <X size={20} />
-              </button>
-            </div>
-            <textarea
-              value={reason}
-              onChange={(e) => setReason(e.target.value)}
-              placeholder="Descreva o motivo..."
-              className="w-full border rounded-lg p-3 mb-4 h-32 resize-none"
-              autoFocus
-            />
-            <div className="flex justify-end gap-3">
-              <button
-                onClick={() => setShowReason(false)}
-                className="px-4 py-2 border rounded-lg hover:bg-gray-100"
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={handleDisapprove}
-                disabled={!reason.trim()}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Reprovar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
+      <hr className="border-brand-blue-dark/20 mb-4 mt-4 max-md:hidden" />
+    </div>
   );
 }

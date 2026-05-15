@@ -3,19 +3,19 @@ import { messages } from "../../i18n/pt-BR";
 import EvidenceLightbox from "./EvidenceLightbox";
 import SimilarityBar from "./SimilarityBar";
 
-interface EvidenceSectionProps {
+interface PhotographicEvidenceSectionProps {
   selfieUrl: string;
   documentUrl: string;
   facialSimilarity: number;
 }
 
-export default function EvidenceSection({
+export default function PhotographicEvidenceSection({
   selfieUrl,
   documentUrl,
   facialSimilarity,
-}: EvidenceSectionProps) {
+}: PhotographicEvidenceSectionProps) {
   return (
-    <div>
+    <div className="md:px-6">
       <h3 className="text-lg font-semibold text-brand-blue-dark mb-4">
         Evidências Visuais
       </h3>
@@ -33,12 +33,15 @@ export default function EvidenceSection({
           },
         ]}
       />
-      <div className="mb-4 mt-6">
-        <p className="text-sm font-medium text-gray-700 mb-2">
+      <hr className="border-brand-blue-dark/20 mb-4 mt-2" />
+
+      <div className="mb-4 mt-6 mx-4">
+        <p className="text-sm font-bold font-mono text-brand-blue-dark">
           {messages.dossier.facialSimilarity}:
         </p>
         <SimilarityBar value={facialSimilarity} />
       </div>
+      <hr className="border-brand-blue-dark/20" />
     </div>
   );
 }

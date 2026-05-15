@@ -38,4 +38,5 @@ export interface DossierState {
   loading: boolean;
   error: string | null;
   actionInProgress: "approving" | "disapproving" | null;
+  disapprovalDraft: string;
 }

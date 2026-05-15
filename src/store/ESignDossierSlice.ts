@@ -1,4 +1,8 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
 
 import type { ApiResponse } from "../types/apiResponse";
 import type { Dossier, DossierState } from "../types/eSignDossier";
@@ -10,6 +14,7 @@ const initialState: DossierState = {
   loading: false,
   error: null,
   actionInProgress: null,
+  disapprovalDraft: "",
 };
 
 export const fetchDossier = createAsyncThunk<Dossier, string>(
@@ -53,6 +58,9 @@ const esignDossierSlice = createSlice({
   initialState,
   reducers: {
     clearDossier: () => initialState,
+    setDisapprovalDraft(state, action: PayloadAction<string>) {
+      state.disapprovalDraft = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -93,7 +101,7 @@ const esignDossierSlice = createSlice({
   },
 });
 
-export const { clearDossier } = esignDossierSlice.actions;
+export const { clearDossier, setDisapprovalDraft } = esignDossierSlice.actions;
 
 export const selectDossier = (state: RootState) => state.eSignDossier;
 

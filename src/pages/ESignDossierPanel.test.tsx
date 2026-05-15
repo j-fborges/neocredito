@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, beforeEach } from "vitest";
 
 import { server } from "../mocks/server";
 import { store } from "../store";
@@ -44,26 +44,27 @@ function renderComponent(initialRoute = "/us-02/101") {
 }
 
 describe("ESignDossierPanel", () => {
-  it("renders dossier data correctly", async () => {
+  beforeEach(() => {
     server.use(
       http.get("/api/dossier/:proposalId", () =>
         HttpResponse.json({ data: mockDossier }),
       ),
     );
+  });
 
+  it("renders dossier data and action buttons", async () => {
     renderComponent();
 
     expect(
       await screen.findByText("Dossiê de E-Assinatura"),
     ).toBeInTheDocument();
-
     expect(screen.getByText(/Nº Proposta: 101/)).toBeInTheDocument();
     expect(screen.getByText("Pendente")).toBeInTheDocument();
 
     expect(screen.getByText(/João Silva/)).toBeInTheDocument();
-    expect(screen.getByText(/123.456.789-00/)).toBeInTheDocument();
+    expect(screen.getByText(/123\.456\.789-00/)).toBeInTheDocument();
     expect(screen.getByText(/10\/05\/2025/)).toBeInTheDocument();
-    expect(screen.getByText(/192.168.1.10/)).toBeInTheDocument();
+    expect(screen.getByText(/192\.168\.1\.10/)).toBeInTheDocument();
 
     const addressElements = screen.getAllByText(/Av\. Paulista, 1000/);
     expect(addressElements.length).toBeGreaterThanOrEqual(2);
@@ -76,30 +77,22 @@ describe("ESignDossierPanel", () => {
     expect(
       screen.getByText("Local aproximado da assinatura"),
     ).toBeInTheDocument();
-    expect(screen.getByText(/-23.5505, -46.6333/)).toBeInTheDocument();
+    expect(screen.getByText(/-23\.5505, -46\.6333/)).toBeInTheDocument();
 
-    const mapImage = screen.getByAltText(
-      "Mapa da localização -23.5505, -46.6333",
-    );
+    const mapImage = screen.getByAltText(/Mapa da localização/);
     expect(mapImage).toBeInTheDocument();
     expect(mapImage.tagName).toBe("IMG");
 
     const selfieImg = screen.getByAltText("Selfie do assinante");
-    expect(selfieImg).toBeInTheDocument();
-    expect(selfieImg).toHaveAttribute(
-      "src",
-      "https://placehold.co/300x400?text=Selfie",
-    );
-
+    expect(selfieImg).toHaveAttribute("src", mockDossier.selfieUrl);
     const docImg = screen.getByAltText("Documento do assinante");
-    expect(docImg).toBeInTheDocument();
-    expect(docImg).toHaveAttribute(
-      "src",
-      "https://placehold.co/400x300?text=Documento",
-    );
+    expect(docImg).toHaveAttribute("src", mockDossier.documentUrl);
 
-    const similarityTexts = screen.getAllByText(/98\.5%/);
+    const similarityTexts = screen.getAllByText(/98[,.]5%/);
     expect(similarityTexts.length).toBeGreaterThanOrEqual(1);
+
+    expect(screen.getByText("Aprovado:")).toBeInTheDocument();
+    expect(screen.getByText("Reprovado:")).toBeInTheDocument();
   });
 
   it("shows loading state", () => {
@@ -113,22 +106,8 @@ describe("ESignDossierPanel", () => {
         HttpResponse.json({ message: "Erro" }, { status: 500 }),
       ),
     );
-
     renderComponent();
     expect(await screen.findByText(/Erro:/)).toBeInTheDocument();
-  });
-
-  it("shows action buttons when dossier is pending", async () => {
-    server.use(
-      http.get("/api/dossier/:proposalId", () =>
-        HttpResponse.json({ data: mockDossier }),
-      ),
-    );
-
-    renderComponent();
-
-    expect(await screen.findByText("Aprovado")).toBeInTheDocument();
-    expect(screen.getByText("Reprovado")).toBeInTheDocument();
   });
 
   it("can approve a dossier", async () => {
@@ -136,31 +115,20 @@ describe("ESignDossierPanel", () => {
       ...mockDossier,
       status: "APPROVED_AWAITING_AUDIT" as const,
     };
-
     server.use(
-      http.get("/api/dossier/:proposalId", () =>
-        HttpResponse.json({ data: mockDossier }),
-      ),
       http.patch("/api/dossier/:proposalId/approve", () =>
         HttpResponse.json({ data: updatedDossier }),
       ),
     );
 
     renderComponent();
-
-    const approveBtn = await screen.findByText("Aprovado");
-    await userEvent.click(approveBtn);
-
+    await userEvent.click(await screen.findByText("Aprovado:"));
     expect(screen.getByText("Confirmar aprovação")).toBeInTheDocument();
-    expect(screen.getByText("Deseja aprovar este dossiê?")).toBeInTheDocument();
 
-    const confirmBtn = screen.getByText("Confirmar");
-    await userEvent.click(confirmBtn);
-
+    await userEvent.click(screen.getByText("Confirmar"));
     expect(
       await screen.findByText("Aprovado - Aguardando Auditoria"),
     ).toBeInTheDocument();
-
     expect(screen.queryByText("Confirmar aprovação")).not.toBeInTheDocument();
   });
 
@@ -169,11 +137,7 @@ describe("ESignDossierPanel", () => {
       ...mockDossier,
       status: "DISAPPROVED_PENDING" as const,
     };
-
     server.use(
-      http.get("/api/dossier/:proposalId", () =>
-        HttpResponse.json({ data: mockDossier }),
-      ),
       http.patch("/api/dossier/:proposalId/disapprove", async ({ request }) => {
         const body = (await request.json()) as { reason: string };
         if (!body.reason?.trim()) {
@@ -187,18 +151,14 @@ describe("ESignDossierPanel", () => {
     );
 
     renderComponent();
-
-    const disapproveBtn = await screen.findByText("Reprovado");
-    await userEvent.click(disapproveBtn);
-
+    await userEvent.click(await screen.findByText("Reprovado:"));
     expect(screen.getByText("Motivo da reprovação")).toBeInTheDocument();
-    const textarea = screen.getByPlaceholderText("Descreva o motivo...");
-    expect(textarea).toBeInTheDocument();
 
+    const textarea = screen.getByPlaceholderText(
+      "Descreva o motivo da reprovação.",
+    );
     await userEvent.type(textarea, "Documento ilegível");
-
-    const reprovarBtn = screen.getByText("Reprovar");
-    await userEvent.click(reprovarBtn);
+    await userEvent.click(screen.getByText("Reprovar"));
 
     expect(await screen.findByText("Reprovado - Pendente")).toBeInTheDocument();
     expect(screen.queryByText("Motivo da reprovação")).not.toBeInTheDocument();
@@ -209,7 +169,6 @@ describe("ESignDossierPanel", () => {
       ...mockDossier,
       status: "APPROVED_AWAITING_AUDIT" as const,
     };
-
     server.use(
       http.get("/api/dossier/:proposalId", () =>
         HttpResponse.json({ data: approvedDossier }),
@@ -217,13 +176,9 @@ describe("ESignDossierPanel", () => {
     );
 
     renderComponent();
-
     await screen.findByText("Dossiê de E-Assinatura");
 
-    const approveBtn = screen.getByText("Aprovado");
-    const disapproveBtn = screen.getByText("Reprovado");
-
-    expect(approveBtn).toBeDisabled();
-    expect(disapproveBtn).toBeDisabled();
+    expect(screen.getByText("Aprovado:")).toBeDisabled();
+    expect(screen.getByText("Reprovado:")).toBeDisabled();
   });
 });

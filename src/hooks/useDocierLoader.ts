@@ -14,6 +14,7 @@ export function useDossierLoader(id: string | undefined) {
     loading,
     error,
     actionInProgress,
+    disapprovalDraft,
   } = useAppSelector(selectDossier);
 
   useEffect(() => {
@@ -25,5 +26,5 @@ export function useDossierLoader(id: string | undefined) {
     };
   }, [id, dispatch]);
 
-  return { dossier, loading, error, actionInProgress };
+  return { dossier, loading, error, actionInProgress, disapprovalDraft };
 }

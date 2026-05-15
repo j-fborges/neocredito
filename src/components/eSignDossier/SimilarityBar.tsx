@@ -10,14 +10,14 @@ export default function SimilarityBar({ value }: SimilarityBarProps) {
   };
 
   return (
-    <div className="flex items-center gap-3">
-      <div className="flex-1 bg-gray-200 rounded-full h-2.5 overflow-hidden">
+    <div className="flex items-end gap-2">
+      <div className="flex-1 rounded-full h-4 overflow-hidden border-2 border-brand-blue-dark bg-white">
         <div
-          className={`h-full rounded-full transition-all duration-500 ${getColor(value)}`}
+          className={`h-full rounded-full transition-all duration-500 border border-brand-blue-dark ${getColor(value)}`}
           style={{ width: `${value}%` }}
         />
       </div>
-      <span className="text-sm font-medium text-gray-700 min-w-[4rem]">
+      <span className="text-xl leading-4 tracking-tighter font-bold font-mono text-brand-blue-dark min-w-16">
         {value}%
       </span>
     </div>
