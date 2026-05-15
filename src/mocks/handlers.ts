@@ -16,7 +16,7 @@ export const daysAgo = (days: number, hour = 0, minute = 0) => {
   return d.toISOString();
 };
 
-const dossiers: Dossier[] = [
+export const initialDossiers: Dossier[] = [
   {
     proposalId: "101",
     signatory: {
@@ -398,6 +398,12 @@ export function resetProposals() {
   proposals = JSON.parse(JSON.stringify(initialProposals));
 }
 
+let dossiers: Dossier[] = JSON.parse(JSON.stringify(initialDossiers));
+
+export function resetDossiers() {
+  dossiers = JSON.parse(JSON.stringify(initialDossiers));
+}
+
 if (typeof window !== "undefined") {
   setInterval(() => {
     const awaitingNotifiable = proposals.filter(
@@ -426,6 +432,36 @@ export const handlers = [
     const response: ApiResponse<Dossier> = { data: dossier };
     return HttpResponse.json(response);
   }),
+
+  http.patch("/api/dossier/:proposalId/approve", ({ params }) => {
+    const dossier = dossiers.find((d) => d.proposalId === params.proposalId);
+    if (!dossier) return new HttpResponse(null, { status: 404 });
+
+    dossier.status = "APPROVED_AWAITING_AUDIT";
+    const response: ApiResponse<Dossier> = { data: dossier };
+    return HttpResponse.json(response);
+  }),
+
+  http.patch(
+    "/api/dossier/:proposalId/disapprove",
+    async ({ request, params }) => {
+      const dossier = dossiers.find((d) => d.proposalId === params.proposalId);
+      if (!dossier) return new HttpResponse(null, { status: 404 });
+
+      const body = (await request.json()) as { reason: string };
+      if (!body.reason?.trim()) {
+        return HttpResponse.json(
+          { message: "Motivo obrigatório" },
+          { status: 400 },
+        );
+      }
+
+      dossier.status = "DISAPPROVED_PENDING";
+      const response: ApiResponse<Dossier> = { data: dossier };
+      return HttpResponse.json(response);
+    },
+  ),
+
   http.get("/api/proposals", ({ request }) => {
     const url = new URL(request.url);
     const statusFilter = url.searchParams.get("status") as ESignStatus | null;

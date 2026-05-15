@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
@@ -30,6 +31,18 @@ const mockDossier: Dossier = {
   status: "PENDING_VALIDATION",
 };
 
+function renderComponent(initialRoute = "/us-02/101") {
+  return render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[initialRoute]}>
+        <Routes>
+          <Route path="/us-02/:id" element={<ESignDossierPanel />} />
+        </Routes>
+      </MemoryRouter>
+    </Provider>,
+  );
+}
+
 describe("ESignDossierPanel", () => {
   it("renders dossier data correctly", async () => {
     server.use(
@@ -38,15 +51,7 @@ describe("ESignDossierPanel", () => {
       ),
     );
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/us-02/101"]}>
-          <Routes>
-            <Route path="/us-02/:id" element={<ESignDossierPanel />} />
-          </Routes>
-        </MemoryRouter>
-      </Provider>,
-    );
+    renderComponent();
 
     expect(
       await screen.findByText("Dossiê de E-Assinatura"),
@@ -98,16 +103,7 @@ describe("ESignDossierPanel", () => {
   });
 
   it("shows loading state", () => {
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/us-02/101"]}>
-          <Routes>
-            <Route path="/us-02/:id" element={<ESignDossierPanel />} />
-          </Routes>
-        </MemoryRouter>
-      </Provider>,
-    );
-
+    renderComponent();
     expect(screen.getByText("Carregando...")).toBeInTheDocument();
   });
 
@@ -118,16 +114,116 @@ describe("ESignDossierPanel", () => {
       ),
     );
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/us-02/101"]}>
-          <Routes>
-            <Route path="/us-02/:id" element={<ESignDossierPanel />} />
-          </Routes>
-        </MemoryRouter>
-      </Provider>,
+    renderComponent();
+    expect(await screen.findByText(/Erro:/)).toBeInTheDocument();
+  });
+
+  it("shows action buttons when dossier is pending", async () => {
+    server.use(
+      http.get("/api/dossier/:proposalId", () =>
+        HttpResponse.json({ data: mockDossier }),
+      ),
     );
 
-    expect(await screen.findByText(/Erro:/)).toBeInTheDocument();
+    renderComponent();
+
+    expect(await screen.findByText("Aprovado")).toBeInTheDocument();
+    expect(screen.getByText("Reprovado")).toBeInTheDocument();
+  });
+
+  it("can approve a dossier", async () => {
+    const updatedDossier = {
+      ...mockDossier,
+      status: "APPROVED_AWAITING_AUDIT" as const,
+    };
+
+    server.use(
+      http.get("/api/dossier/:proposalId", () =>
+        HttpResponse.json({ data: mockDossier }),
+      ),
+      http.patch("/api/dossier/:proposalId/approve", () =>
+        HttpResponse.json({ data: updatedDossier }),
+      ),
+    );
+
+    renderComponent();
+
+    const approveBtn = await screen.findByText("Aprovado");
+    await userEvent.click(approveBtn);
+
+    expect(screen.getByText("Confirmar aprovação")).toBeInTheDocument();
+    expect(screen.getByText("Deseja aprovar este dossiê?")).toBeInTheDocument();
+
+    const confirmBtn = screen.getByText("Confirmar");
+    await userEvent.click(confirmBtn);
+
+    expect(
+      await screen.findByText("Aprovado - Aguardando Auditoria"),
+    ).toBeInTheDocument();
+
+    expect(screen.queryByText("Confirmar aprovação")).not.toBeInTheDocument();
+  });
+
+  it("can disapprove a dossier with a reason", async () => {
+    const updatedDossier = {
+      ...mockDossier,
+      status: "DISAPPROVED_PENDING" as const,
+    };
+
+    server.use(
+      http.get("/api/dossier/:proposalId", () =>
+        HttpResponse.json({ data: mockDossier }),
+      ),
+      http.patch("/api/dossier/:proposalId/disapprove", async ({ request }) => {
+        const body = (await request.json()) as { reason: string };
+        if (!body.reason?.trim()) {
+          return HttpResponse.json(
+            { message: "Motivo obrigatório" },
+            { status: 400 },
+          );
+        }
+        return HttpResponse.json({ data: updatedDossier });
+      }),
+    );
+
+    renderComponent();
+
+    const disapproveBtn = await screen.findByText("Reprovado");
+    await userEvent.click(disapproveBtn);
+
+    expect(screen.getByText("Motivo da reprovação")).toBeInTheDocument();
+    const textarea = screen.getByPlaceholderText("Descreva o motivo...");
+    expect(textarea).toBeInTheDocument();
+
+    await userEvent.type(textarea, "Documento ilegível");
+
+    const reprovarBtn = screen.getByText("Reprovar");
+    await userEvent.click(reprovarBtn);
+
+    expect(await screen.findByText("Reprovado - Pendente")).toBeInTheDocument();
+    expect(screen.queryByText("Motivo da reprovação")).not.toBeInTheDocument();
+  });
+
+  it("disables action buttons when dossier is not pending", async () => {
+    const approvedDossier = {
+      ...mockDossier,
+      status: "APPROVED_AWAITING_AUDIT" as const,
+    };
+
+    server.use(
+      http.get("/api/dossier/:proposalId", () =>
+        HttpResponse.json({ data: approvedDossier }),
+      ),
+    );
+
+    renderComponent();
+
+    await screen.findByText("Dossiê de E-Assinatura");
+
+    const approveBtn = screen.getByText("Aprovado");
+    const disapproveBtn = screen.getByText("Reprovado");
+
+    expect(approveBtn).toBeDisabled();
+    expect(disapproveBtn).toBeDisabled();
   });
 });

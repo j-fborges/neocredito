@@ -156,4 +156,8 @@ OBS: Para o tratamento de erro em `MapSection.tsx` foi criado `MapErrorBoundary.
 
 ### 2.20. 29º Commit
 
-Criação dos components de inspeção de fotos e métrica de similaridade facial, com `zoom` e `pan` com o pacote `yet-another-react-lightbox`, desacoplamento do `ESignDossierPanel.tsx` em componentes de seção. Complementação de testes para novas implementações do `ESignDossierPanel.tsx`.
+Criação dos components de inspeção de fotos e métrica de similaridade facial, com `zoom` e `pan` com o pacote `yet-another-react-lightbox`, desacoplamento do `ESignDossierPanel.tsx` em componentes de seção. Complementação de testes unitários para novas implementações do `ESignDossierPanel.tsx`.
+
+### 2.21. 30º Commit
+
+Criação do componente `ActionButtons.tsx` para a sessão dos botões de **Decisão do Operador** sobre o Dossiê. Desacoplamento das responsabilidades de controles de estado da tela `ESignDossierPanel.tsx` para os hooks `useDocierActions.ts` e `useDocierLoader.ts`. Criação de novos **Thunks** para o *Slice do Dossiê* `ESignDossierSlice.ts` e **handlers do MSW** para os *endpoints* correspondentes, estabelecendo o fluxo de chamadas para a API mockada **para Aprovar ou Desaprovar** o *Dossiê*. Desenvolvimento de *testes unitários* sobre os novos endpoints.

@@ -2,13 +2,20 @@ import { describe, expect, it, beforeEach } from "vitest";
 
 import { server } from "../mocks/server";
 import type { ApiResponse } from "../types/apiResponse";
+import type { Dossier } from "../types/eSignDossier";
 import { ESIGN_STATUS, type SigningProposal } from "../types/signingProposal";
 
-import { handlers, initialProposals, resetProposals } from "./handlers";
+import {
+  handlers,
+  initialProposals,
+  resetDossiers,
+  resetProposals,
+} from "./handlers";
 
 describe("SigningProposal Handlers (via MSW global)", () => {
   beforeEach(() => {
     resetProposals();
+    resetDossiers();
     server.resetHandlers(...handlers);
   });
 
@@ -119,6 +126,55 @@ describe("SigningProposal Handlers (via MSW global)", () => {
 
   it("GET /api/dossier/:proposalId returns 404 for nonexistent", async () => {
     const res = await fetch("/api/dossier/9999");
+    expect(res.status).toBe(404);
+  });
+
+  it("PATCH /api/dossier/:proposalId/approve should set status to APPROVED_AWAITING_AUDIT", async () => {
+    const res = await fetch("/api/dossier/101/approve", { method: "PATCH" });
+    expect(res.status).toBe(200);
+    const body: ApiResponse<Dossier> = await res.json();
+    expect(body.data.status).toBe("APPROVED_AWAITING_AUDIT");
+
+    const res2 = await fetch("/api/dossier/101");
+    const body2: ApiResponse<Dossier> = await res2.json();
+    expect(body2.data.status).toBe("APPROVED_AWAITING_AUDIT");
+  });
+
+  it("PATCH /api/dossier/:proposalId/approve with nonexistent id returns 404", async () => {
+    const res = await fetch("/api/dossier/9999/approve", { method: "PATCH" });
+    expect(res.status).toBe(404);
+  });
+
+  it("PATCH /api/dossier/:proposalId/disapprove should set status to DISAPPROVED_PENDING with valid reason", async () => {
+    const res = await fetch("/api/dossier/101/disapprove", {
+      method: "PATCH",
+      body: JSON.stringify({ reason: "Documento ilegível" }),
+      headers: { "Content-Type": "application/json" },
+    });
+    expect(res.status).toBe(200);
+    const body: ApiResponse<Dossier> = await res.json();
+    expect(body.data.status).toBe("DISAPPROVED_PENDING");
+
+    const res2 = await fetch("/api/dossier/101");
+    const body2: ApiResponse<Dossier> = await res2.json();
+    expect(body2.data.status).toBe("DISAPPROVED_PENDING");
+  });
+
+  it("PATCH /api/dossier/:proposalId/disapprove with empty reason returns 400", async () => {
+    const res = await fetch("/api/dossier/101/disapprove", {
+      method: "PATCH",
+      body: JSON.stringify({ reason: "" }),
+      headers: { "Content-Type": "application/json" },
+    });
+    expect(res.status).toBe(400);
+  });
+
+  it("PATCH /api/dossier/:proposalId/disapprove with nonexistent id returns 404", async () => {
+    const res = await fetch("/api/dossier/9999/disapprove", {
+      method: "PATCH",
+      body: JSON.stringify({ reason: "qualquer" }),
+      headers: { "Content-Type": "application/json" },
+    });
     expect(res.status).toBe(404);
   });
 });
