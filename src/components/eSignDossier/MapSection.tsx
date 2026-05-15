@@ -24,7 +24,7 @@ export default function MapSection({ signatory }: MapSectionProps) {
 
   return (
     <div>
-      <h3 className="text-lg font-semibold font-mono text-brand-blue-dark mb-2">
+      <h3 className="text-lg uppercase font-bold font-mono text-brand-blue-dark mb-2">
         {translations.title}
       </h3>
 

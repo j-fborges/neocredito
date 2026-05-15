@@ -18,7 +18,7 @@ export default function PhotographicEvidenceSection({
 
   return (
     <div className="md:px-6">
-      <h3 className="text-lg font-semibold text-brand-blue-dark mb-4 font-mono">
+      <h3 className="text-lg font-bold uppercase text-brand-blue-dark mb-4 font-mono">
         {translations.evidence.title}
       </h3>
       <EvidenceLightbox

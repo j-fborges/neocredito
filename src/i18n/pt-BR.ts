@@ -53,7 +53,7 @@ export const messages = {
     title: "Dossiê de E-Assinatura",
     proposalNumber: "Nº Proposta",
     status: "Status do Dossiê",
-    signatoryData: "Dados do Assinante",
+    signatoryData: "Dados do Assinante:",
     name: "Nome",
     cpf: "CPF",
     signatureDate: "Data da Assinatura",
@@ -89,7 +89,7 @@ export const messages = {
       submit: "Reprovar",
     },
     evidence: {
-      title: "Evidências Visuais",
+      title: "Fotografias enviadas:",
     },
     map: {
       title: "Localização geográfica:",

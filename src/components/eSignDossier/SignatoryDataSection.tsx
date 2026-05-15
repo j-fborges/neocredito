@@ -18,25 +18,39 @@ export default function SignatoryDataSection({
     });
   return (
     <>
-      <h2 className="leading-6 text-xl mb-4 font-sans text-brand-blue-dark">
+      <h2 className="leading-6 text-xl md:pl-2 mb-4 p font-mono font-bold uppercase text-brand-blue-dark">
         {translations.dossier.signatoryData}
       </h2>
-      <div className="space-y-2 pl-2">
+      <div className=" pl-2">
         <p>
-          <strong>{translations.dossier.name}:</strong> {signatory.fullName}
+          <strong className="font-mono uppercase font-2xs">
+            {translations.dossier.name}:
+          </strong>{" "}
+          {signatory.fullName}
         </p>
         <p>
-          <strong>{translations.dossier.cpf}:</strong> {signatory.cpf}
+          <strong className="font-mono uppercase font-2xs">
+            {translations.dossier.cpf}:
+          </strong>{" "}
+          {signatory.cpf}
         </p>
         <p>
-          <strong>{translations.dossier.signatureDate}:</strong>{" "}
+          <strong className="font-mono uppercase font-2xs">
+            {translations.dossier.signatureDate}:
+          </strong>{" "}
           {formatDate(signatory.signatureDate)}
         </p>
         <p>
-          <strong>{translations.dossier.ip}:</strong> {signatory.ip}
+          <strong className="font-mono uppercase font-2xs">
+            {translations.dossier.ip}:
+          </strong>{" "}
+          {signatory.ip}
         </p>
         <p>
-          <strong>{translations.dossier.address}:</strong> {signatory.address}
+          <strong className="font-mono uppercase font-2xs">
+            {translations.dossier.address}:
+          </strong>{" "}
+          {signatory.address}
         </p>
       </div>
     </>
