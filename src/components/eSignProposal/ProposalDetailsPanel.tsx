@@ -17,7 +17,7 @@ export default function ProposalDetailPanel({
   loading,
   onClose,
 }: ProposalDetailPanelProps) {
-  const { modal } = messages.proposal;
+  const { modal: translations } = messages.proposal;
   const isNew =
     proposal?.notifiable && proposal.status === "SIGNED" && !proposal.notified;
 
@@ -29,7 +29,7 @@ export default function ProposalDetailPanel({
     >
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-bold text-brand-blue-dark">
-          {modal.title}
+          {translations.title}
         </h2>
         <button
           onClick={onClose}
@@ -38,7 +38,7 @@ export default function ProposalDetailPanel({
               ? "text-gray-500 hover:text-brand-blue-dark cursor-pointer hidden"
               : "text-gray-500 hover:text-brand-blue-dark cursor-pointer"
           }
-          aria-label={modal.close}
+          aria-label={translations.close}
         >
           <X size={24} />
         </button>
@@ -65,20 +65,21 @@ export default function ProposalDetailPanel({
               <strong>ID:</strong> {proposal.id}
             </p>
             <p>
-              <strong>{modal.client}:</strong> {proposal.customer.fullName}
+              <strong>{translations.client}:</strong>{" "}
+              {proposal.customer.fullName}
             </p>
             <p>
-              <strong>{modal.cpf}:</strong> {proposal.customer.cpf}
+              <strong>{translations.cpf}:</strong> {proposal.customer.cpf}
             </p>
             <p>
-              <strong>{modal.status}:</strong>{" "}
+              <strong>{translations.status}:</strong>{" "}
               <StatusBadge status={proposal.status} pulse={isNew} />
             </p>
           </div>
           <hr className="border-gray-200" />
           <div>
             <p>
-              <strong>{modal.link}:</strong>{" "}
+              <strong>{translations.link}:</strong>{" "}
               <a
                 href={proposal.details.eSignLink}
                 className="text-blue-600 underline"
@@ -89,13 +90,13 @@ export default function ProposalDetailPanel({
               </a>
             </p>
             <p>
-              <strong>{modal.sentDate}:</strong>{" "}
+              <strong>{translations.sentDate}:</strong>{" "}
               {new Date(proposal.details.sentDate).toLocaleString("pt-BR")}
             </p>
           </div>
           <hr className="border-gray-200" />
           <div>
-            <strong>{modal.attempts}:</strong>
+            <strong>{translations.attempts}:</strong>
             <ContactAttemptList attempts={proposal.details.contactAttempts} />
           </div>
         </div>

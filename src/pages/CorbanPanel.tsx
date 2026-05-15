@@ -6,7 +6,7 @@ import { useProposalDetail } from "../hooks/useProposalDetail";
 import { useProposalNotifications } from "../hooks/useProposalNotifications";
 import { useProposalPolling } from "../hooks/useProposalPolling";
 import { useProposalSearch } from "../hooks/useProposalSearch";
-import { messages } from "../i18n/pt-BR";
+import { messages as translations } from "../i18n/pt-BR";
 import { useAppSelector } from "../store/hooks";
 import { selectProposals } from "../store/SigningProposalSlice";
 
@@ -31,10 +31,10 @@ export default function CorbanPannel() {
           id="corban-heading"
           className="leading-6 text-2xl pt-0 sm:pt-2 pl-1 font-bold mb-4 font-mono uppercase text-brand-blue-dark"
         >
-          {messages.proposal.title}
+          {translations.proposal.title}
         </h1>
         <h2 className="leading-6 text-xl mb-4 font-sans pl-1 sm:p-0 text-brand-blue-dark">
-          {messages.proposal.subtitle}
+          {translations.proposal.subtitle}
         </h2>
 
         <FilterBar

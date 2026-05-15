@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 
-import { messages } from "../i18n/pt-BR";
+import { messages as translations } from "../i18n/pt-BR";
 import { approveDossier, disapproveDossier } from "../store/ESignDossierSlice";
 import { useAppDispatch } from "../store/hooks";
 import { addToast } from "../store/UiSlice";
@@ -22,7 +22,7 @@ export function useDossierActions(
       .then(() => {
         dispatch(
           addToast({
-            message: messages.dossier.toast.approved,
+            message: translations.dossier.toast.approved,
             type: "success",
           }),
         );
@@ -38,7 +38,7 @@ export function useDossierActions(
         .then(() => {
           dispatch(
             addToast({
-              message: messages.dossier.toast.disapproved,
+              message: translations.dossier.toast.disapproved,
               type: "error",
             }),
           );

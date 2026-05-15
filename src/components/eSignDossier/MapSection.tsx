@@ -13,7 +13,7 @@ interface MapSectionProps {
 }
 
 export default function MapSection({ signatory }: MapSectionProps) {
-  const { map } = messages.dossier;
+  const { map: translations } = messages.dossier;
 
   const fallback = (
     <StaticMapFallback
@@ -25,29 +25,31 @@ export default function MapSection({ signatory }: MapSectionProps) {
   return (
     <div>
       <h3 className="text-lg font-semibold font-mono text-brand-blue-dark mb-2">
-        {map.title}
+        {translations.title}
       </h3>
 
       <div className="text-sm text-gray-700 mb-2 flex flex-wrap gap-x-2 gap-y-1">
         <span>
-          <strong>{map.address}:</strong> {signatory.address},{" "}
+          <strong>{translations.address}:</strong> {signatory.address},{" "}
           {signatory.neighborhood}
         </span>
         <span className="hidden sm:inline">|</span>
         <span>
-          <strong>{map.zipCode}:</strong> {signatory.zipCode}
+          <strong>{translations.zipCode}:</strong> {signatory.zipCode}
         </span>
         <span className="hidden sm:inline">|</span>
         <span>
-          <strong>{map.city}:</strong> {signatory.city}
+          <strong>{translations.city}:</strong> {signatory.city}
         </span>
         <span className="hidden sm:inline">|</span>
         <span>
-          <strong>{map.country}:</strong> {signatory.country}
+          <strong>{translations.country}:</strong> {signatory.country}
         </span>
       </div>
 
-      <p className="text-xs text-gray-500 italic mb-1">{map.approximate}</p>
+      <p className="text-xs text-gray-500 italic mb-1">
+        {translations.approximate}
+      </p>
 
       <Suspense fallback={fallback}>
         <MapErrorBoundary fallback={fallback}>
@@ -59,7 +61,7 @@ export default function MapSection({ signatory }: MapSectionProps) {
       </Suspense>
 
       <p className="text-xs text-gray-500 mt-1">
-        {map.coordinates}: {signatory.coordinates.lat},{" "}
+        {translations.coordinates}: {signatory.coordinates.lat},{" "}
         {signatory.coordinates.lon}
       </p>
     </div>

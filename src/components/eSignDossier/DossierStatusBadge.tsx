@@ -1,4 +1,4 @@
-import { messages } from "../../i18n/pt-BR";
+import { messages as translations } from "../../i18n/pt-BR";
 import { DOSSIER_STATUS, type DossierStatus } from "../../types/eSignDossier";
 
 const colorMap: Record<DossierStatus, string> = {
@@ -18,7 +18,7 @@ export default function DossierStatusBadge({
     <span
       className={`inline-block px-2 py-1 rounded text-sm font-medium ${colorMap[status]}`}
     >
-      {messages.dossier.statusDossier[status]}
+      {translations.dossier.statusDossier[status]}
     </span>
   );
 }

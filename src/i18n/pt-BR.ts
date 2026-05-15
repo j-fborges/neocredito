@@ -1,4 +1,10 @@
 export const messages = {
+  navigation: {
+    goToDossier: "Dossiê Validação (US-02)",
+    goToPanel: "Painel CORBAN (US-01)",
+    arrowAlt: "Seta navegação",
+    notFound: "Página não encontrada",
+  },
   proposal: {
     title: "Painel de Acompanhamento do CORBAN",
     subtitle: "Assinaturas Eletrônicas de Propostas em Operação:",

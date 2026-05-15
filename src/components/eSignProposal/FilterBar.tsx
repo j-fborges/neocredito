@@ -1,4 +1,4 @@
-import { messages } from "../../i18n/pt-BR";
+import { messages as translations } from "../../i18n/pt-BR";
 import type { ESignStatus } from "../../types/signingProposal";
 
 import StatusFilterSelect from "./StatusFilterSelect";
@@ -21,7 +21,7 @@ export default function FilterBar({
       <StatusFilterSelect value={statusFilter} onChange={onStatusChange} />
       <input
         type="text"
-        placeholder={messages.proposal.filter.searchPlaceholder}
+        placeholder={translations.proposal.filter.searchPlaceholder}
         className="border rounded px-3 py-2 flex-1 bg-white"
         value={inputValue}
         onChange={(e) => onInputChange(e.target.value)}

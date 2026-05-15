@@ -14,28 +14,31 @@ export default function PhotographicEvidenceSection({
   documentUrl,
   facialSimilarity,
 }: PhotographicEvidenceSectionProps) {
-  const {
-    evidence,
-    facialSimilarity: similarityLabel,
-    selfie,
-    document,
-  } = messages.dossier;
+  const { dossier: translations } = messages;
 
   return (
     <div className="md:px-6">
       <h3 className="text-lg font-semibold text-brand-blue-dark mb-4 font-mono">
-        {evidence.title}
+        {translations.evidence.title}
       </h3>
       <EvidenceLightbox
         images={[
-          { src: selfieUrl, alt: "Selfie do assinante", label: selfie },
-          { src: documentUrl, alt: "Documento do assinante", label: document },
+          {
+            src: selfieUrl,
+            alt: "Selfie do assinante",
+            label: translations.selfie,
+          },
+          {
+            src: documentUrl,
+            alt: "Documento do assinante",
+            label: translations.document,
+          },
         ]}
       />
       <hr className="border-brand-blue-dark/20 mb-4 mt-2" />
       <div className="mb-4 mt-6 mx-4">
         <p className="text-sm font-bold font-mono text-brand-blue-dark">
-          {similarityLabel}:
+          {translations.facialSimilarity}:
         </p>
         <SimilarityBar value={facialSimilarity} />
       </div>

@@ -1,4 +1,4 @@
-import { messages } from "../../i18n/pt-BR";
+import { messages as translations } from "../../i18n/pt-BR";
 import type { SigningProposal } from "../../types/signingProposal";
 
 import ProposalList from "./ProposalList";
@@ -19,7 +19,7 @@ export default function ProposalContent({
   if (loading) {
     return (
       <div role="status" aria-live="polite" className="py-4">
-        <p>{messages.proposal.loading}</p>
+        <p>{translations.proposal.loading}</p>
       </div>
     );
   }
@@ -28,7 +28,7 @@ export default function ProposalContent({
     return (
       <div role="alert" className="py-4 text-red-500">
         <p>
-          {messages.error.loading}: {error}
+          {translations.error.loading}: {error}
         </p>
       </div>
     );
@@ -37,7 +37,7 @@ export default function ProposalContent({
   if (itens.length === 0) {
     return (
       <section
-        aria-label={messages.proposal.empty.title}
+        aria-label={translations.proposal.empty.title}
         className="py-16 text-center"
       >
         <svg
@@ -54,10 +54,10 @@ export default function ProposalContent({
           />
         </svg>
         <h3 className="mt-2 text-sm font-semibold text-gray-900">
-          {messages.proposal.empty.title}
+          {translations.proposal.empty.title}
         </h3>
         <p className="mt-1 text-sm text-gray-500">
-          {messages.proposal.empty.description}
+          {translations.proposal.empty.description}
         </p>
       </section>
     );
@@ -67,7 +67,7 @@ export default function ProposalContent({
     <section aria-label="Lista de propostas">
       <div className="text-center pb-2 text-gray-500 flex lg:hidden">
         <p className="text-xs">
-          {messages.proposal.detailPanel.emptyDescription}
+          {translations.proposal.detailPanel.emptyDescription}
         </p>
       </div>
       <ProposalList itens={itens} onRowClick={onRowClick} />

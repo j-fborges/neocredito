@@ -1,4 +1,4 @@
-import { messages } from "../../i18n/pt-BR";
+import { messages as translations } from "../../i18n/pt-BR";
 import { ESIGN_STATUS, type ESignStatus } from "../../types/signingProposal";
 
 const colorMap: Record<ESignStatus, string> = {
@@ -19,7 +19,9 @@ export default function StatusBadge({
   pulse = false,
   centralized = false,
 }: StatusBadgeProps) {
-  const label = pulse ? messages.status.JUST_SIGNED : messages.status[status];
+  const label = pulse
+    ? translations.status.JUST_SIGNED
+    : translations.status[status];
 
   return (
     <span

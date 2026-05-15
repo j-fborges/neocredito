@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { messages } from "../i18n/pt-BR";
+import { messages as translations } from "../i18n/pt-BR";
 import { useAppDispatch } from "../store/hooks";
 import { addToast } from "../store/UiSlice";
 import type { SigningProposal } from "../types/signingProposal";
@@ -21,7 +21,7 @@ export function useProposalNotifications(itens: SigningProposal[]) {
         notifiedIds.add(item.id);
         dispatch(
           addToast({
-            message: messages.proposal.toast.newSignature
+            message: translations.proposal.toast.newSignature
               .replace("{name}", item.customer.fullName)
               .replace("{id}", item.id),
             type: "info",
